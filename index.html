@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spendly — Smart Expense Tracker</title>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Spendly Styles -->
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="auth.css"/>
+</head>
+<body>
+
+<!-- ============================================================
+     AUTH SCREEN (Login / Sign Up) — shown until user logs in
+     ============================================================ -->
+<div id="auth-screen">
+  <div class="auth-card">
+
+    <!-- Logo -->
+    <div class="auth-logo">
+      <span class="auth-logo-text">Spendly</span>
+      <span class="auth-logo-sub">Smart Finance Tracker</span>
+    </div>
+
+    <!-- Tabs: Login / Sign Up -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login" onclick="authTab('login')">Sign In</button>
+      <button class="auth-tab"        id="tab-signup" onclick="authTab('signup')">Create Account</button>
+    </div>
+
+    <!-- ── LOGIN PANEL ── -->
+    <div class="auth-panel active" id="panel-login">
+      <div class="auth-msg" id="login-msg"></div>
+
+      <!-- Google -->
+      <button class="btn-google" onclick="handleGoogleAuth()">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Continue with Google
+      </button>
+
+      <div class="auth-divider">or sign in with email</div>
+
+      <div class="form-group">
+        <div class="form-label">Email</div>
+        <input type="email" class="form-control" id="login-email" placeholder="you@example.com" autocomplete="email">
+      </div>
+
+      <div class="form-group">
+        <div class="form-label">
+          Password
+          <button class="forgot-link" onclick="handleForgotPassword()">Forgot password?</button>
+        </div>
+        <div class="pw-wrapper">
+          <input type="password" class="form-control" id="login-password" placeholder="••••••••" autocomplete="current-password"
+                 onkeydown="if(event.key==='Enter')handleEmailLogin()">
+          <button class="pw-toggle" onclick="togglePw('login-password',this)" tabindex="-1">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+      </div>
+
+      <button class="btn-auth" id="btn-login" onclick="handleEmailLogin()">
+        <span class="btn-label">Sign In</span>
+        <div class="spinner"></div>
+      </button>
+    </div><!-- /panel-login -->
+
+    <!-- ── SIGN UP PANEL ── -->
+    <div class="auth-panel" id="panel-signup">
+      <div class="auth-msg" id="signup-msg"></div>
+
+      <!-- Google -->
+      <button class="btn-google" onclick="handleGoogleAuth()">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Sign up with Google
+      </button>
+
+      <div class="auth-divider">or create with email</div>
+
+      <div class="form-group">
+        <div class="form-label">Full Name</div>
+        <input type="text" class="form-control" id="signup-name" placeholder="Your Name" autocomplete="name">
+      </div>
+
+      <div class="form-group">
+        <div class="form-label">Email</div>
+        <input type="email" class="form-control" id="signup-email" placeholder="you@example.com" autocomplete="email">
+      </div>
+
+      <div class="form-group">
+        <div class="form-label">Password</div>
+        <div class="pw-wrapper">
+          <input type="password" class="form-control" id="signup-password" placeholder="Min. 6 characters"
+            autocomplete="new-password" oninput="checkStrength(this.value)"
+            onkeydown="if(event.key==='Enter')handleEmailSignup()">
+          <button class="pw-toggle" onclick="togglePw('signup-password',this)" tabindex="-1">
+            <i class="fas fa-eye"></i>
+          </button>
+        </div>
+        <div class="pw-strength" id="pw-strength">
+          <div class="pw-strength-bar"><div class="pw-strength-fill" id="pw-fill"></div></div>
+          <div class="pw-strength-label" id="pw-label">Too short</div>
+        </div>
+      </div>
+
+      <button class="btn-auth" id="btn-signup" onclick="handleEmailSignup()">
+        <span class="btn-label">Create Account</span>
+        <div class="spinner"></div>
+      </button>
+    </div><!-- /panel-signup -->
+
+    <div class="auth-footer">
+      By signing in you agree to our <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a>
+    </div>
+  </div>
+</div><!-- /auth-screen -->
+
+<!-- ============================================================
+     MOBILE SIDEBAR TOGGLE
+     ============================================================ -->
+<button class="mobile-toggle" id="mobileToggle" onclick="toggleSidebar()">
+  <i class="fas fa-bars"></i>
+</button>
+
+<!-- ============================================================
+     SIDEBAR NAVIGATION
+     ============================================================ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-text">Spendly</div>
+    <div class="logo-sub">Smart Finance Tracker</div>
+  </div>
+
+  <!-- User info — shown when logged in -->
+  <div id="sidebar-user" style="display:none">
+    <div class="user-info">
+      <div class="user-avatar" id="user-avatar">?</div>
+      <div class="user-details">
+        <div class="user-name"  id="user-name">—</div>
+        <div class="user-email" id="user-email">—</div>
+      </div>
+      <button class="btn-logout" title="Sign out" onclick="handleLogout()">
+        <i class="fas fa-right-from-bracket"></i>
+      </button>
+    </div>
+    <div class="sync-row">
+      <div class="sync-dot" id="sync-dot"></div>
+      <span id="sync-label">Synced</span>
+    </div>
+  </div>
+
+  <div style="flex:1;overflow-y:auto;padding:8px 0">
+    <div class="nav-section-label">Main</div>
+    <div class="nav-item active" data-page="dashboard" onclick="nav(this,'dashboard')">
+      <i class="fas fa-home"></i> Dashboard
+    </div>
+    <div class="nav-item" data-page="transactions" onclick="nav(this,'transactions')">
+      <i class="fas fa-list-ul"></i> Transactions
+      <span class="nav-badge" id="tx-count-badge">0</span>
+    </div>
+
+    <div class="nav-section-label">Planning</div>
+    <div class="nav-item" data-page="budgets" onclick="nav(this,'budgets')">
+      <i class="fas fa-wallet"></i> Budgets
+    </div>
+    <div class="nav-item" data-page="goals" onclick="nav(this,'goals')">
+      <i class="fas fa-bullseye"></i> Savings Goals
+    </div>
+    <div class="nav-item" data-page="recurring" onclick="nav(this,'recurring')">
+      <i class="fas fa-rotate"></i> Recurring
+    </div>
+
+    <div class="nav-section-label">Insights</div>
+
+    <!-- Analytics — requires login -->
+    <div class="nav-item nav-locked" data-page="analytics" id="nav-analytics" onclick="navProtected(this,'analytics')">
+      <i class="fas fa-chart-line"></i> Analytics
+      <span class="nav-lock-badge" id="analytics-lock"><i class="fas fa-lock"></i></span>
+    </div>
+
+    <!-- Settings — requires login -->
+    <div class="nav-item nav-locked" data-page="settings" id="nav-settings" onclick="navProtected(this,'settings')">
+      <i class="fas fa-gear"></i> Settings
+      <span class="nav-lock-badge" id="settings-lock"><i class="fas fa-lock"></i></span>
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-currency">
+      <i class="fas fa-coins" style="color:var(--gold);font-size:.85rem"></i>
+      <select id="global-currency" onchange="setCurrency(this.value)">
+        <option value="INR">₹ INR – Indian Rupee</option>
+        <option value="USD">$ USD – US Dollar</option>
+        <option value="EUR">€ EUR – Euro</option>
+        <option value="GBP">£ GBP – Pound</option>
+        <option value="JPY">¥ JPY – Yen</option>
+        <option value="CAD">CA$ CAD – Canadian</option>
+        <option value="AUD">A$ AUD – Australian</option>
+        <option value="SGD">S$ SGD – Singapore</option>
+        <option value="BDT">৳ BDT – Bangladeshi</option>
+      </select>
+    </div>
+    <div style="font-size:.68rem;color:var(--muted);margin-top:10px;text-align:center" id="storage-label">
+      Data stored locally on your device
+    </div>
+  </div>
+</aside>
+
+<!-- ============================================================
+     MAIN CONTENT AREA
+     ============================================================ -->
+<main class="main">
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div class="page-title" id="page-title">Dashboard</div>
+    <div class="topbar-right">
+      <button class="btn-add" onclick="openModal()">
+        <i class="fas fa-plus"></i> Add Transaction
+      </button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ==================================================
+         PAGE: DASHBOARD
+         ================================================== -->
+    <div class="page active" id="page-dashboard">
+
+      <!-- Greeting -->
+      <div style="margin-bottom:22px">
+        <h1 id="greeting" style="font-size:1.5rem;font-weight:900;letter-spacing:-.5px"></h1>
+        <p id="greeting-sub" style="color:var(--muted);font-size:.82rem;margin-top:3px"></p>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="stats-grid">
+        <div class="stat-card sc-green">
+          <div class="stat-label"><i class="fas fa-arrow-trend-down"></i> Income This Month</div>
+          <div class="stat-val" id="s-income">₹0</div>
+          <div class="stat-sub" id="s-income-sub">0 transactions</div>
+          <i class="fas fa-piggy-bank stat-icon"></i>
+        </div>
+        <div class="stat-card sc-red">
+          <div class="stat-label"><i class="fas fa-arrow-trend-up"></i> Spent This Month</div>
+          <div class="stat-val" id="s-spent">₹0</div>
+          <div class="stat-sub" id="s-spent-sub">0 transactions</div>
+          <i class="fas fa-receipt stat-icon"></i>
+        </div>
+        <div class="stat-card sc-blue">
+          <div class="stat-label"><i class="fas fa-scale-balanced"></i> Net Balance</div>
+          <div class="stat-val" id="s-balance">₹0</div>
+          <div class="stat-sub">All time income − expenses</div>
+          <i class="fas fa-vault stat-icon"></i>
+        </div>
+        <div class="stat-card sc-gold">
+          <div class="stat-label"><i class="fas fa-seedling"></i> Savings Rate</div>
+          <div class="stat-val" id="s-rate">0%</div>
+          <div class="stat-sub" id="s-rate-sub">of income saved</div>
+          <i class="fas fa-chart-pie stat-icon"></i>
+        </div>
+      </div>
+
+      <!-- Insights -->
+      <div class="g2" style="margin-bottom:20px" id="insights-row"></div>
+
+      <!-- Charts + Recent Transactions -->
+      <div class="g-left">
+
+        <!-- Pie chart -->
+        <div class="card" style="align-self:start">
+          <div class="card-head">
+            <div class="card-title">Spending Breakdown</div>
+            <select class="form-control" style="width:auto;padding:5px 10px;font-size:.75rem" id="pie-period" onchange="renderDashboard()">
+              <option value="month">This Month</option>
+              <option value="3month">Last 3 Months</option>
+              <option value="year">This Year</option>
+              <option value="all">All Time</option>
+            </select>
+          </div>
+          <div class="chart-wrap" style="height:220px"><canvas id="chart-pie"></canvas></div>
+          <div id="pie-legend" style="margin-top:14px"></div>
+        </div>
+
+        <!-- Right column -->
+        <div style="display:flex;flex-direction:column;gap:20px">
+
+          <!-- Bar Chart -->
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title">Income vs Expenses</div>
+              <span style="font-size:.72rem;color:var(--muted)">Last 6 months</span>
+            </div>
+            <div class="chart-wrap" style="height:180px"><canvas id="chart-bar"></canvas></div>
+          </div>
+
+          <!-- Recent Transactions -->
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title-lg">Recent Transactions</div>
+              <button class="btn btn-ghost btn-sm" onclick="nav(document.querySelector('[data-page=transactions]'),'transactions')">
+                View All <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+            <div id="recent-list"></div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /page-dashboard -->
+
+    <!-- ==================================================
+         PAGE: TRANSACTIONS
+         ================================================== -->
+    <div class="page" id="page-transactions">
+
+      <div class="transactions-header">
+        <div>
+          <h2 style="font-size:1.3rem;font-weight:800;letter-spacing:-.3px">Transactions</h2>
+          <p style="font-size:.78rem;color:var(--muted);margin-top:2px">Every penny tracked, in and out</p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-success btn-sm" onclick="exportCSV()"><i class="fas fa-download"></i> Export CSV</button>
+          <button class="btn btn-danger btn-sm" onclick="confirmClearAll()"><i class="fas fa-trash"></i> Clear All</button>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-bar">
+        <div class="form-group flex-grow">
+          <div class="form-label">Search</div>
+          <div class="input-group">
+            <span class="input-prefix"><i class="fas fa-search"></i></span>
+            <input type="search" class="form-control" id="f-search" placeholder="Description, category, tags..." oninput="renderTransactions()">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-label">Type</div>
+          <select class="form-control" id="f-type" onchange="renderTransactions()">
+            <option value="">All Types</option>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <div class="form-label">Category</div>
+          <select class="form-control" id="f-cat" onchange="renderTransactions()">
+            <option value="">All Categories</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <div class="form-label">From</div>
+          <input type="date" class="form-control" id="f-from" onchange="renderTransactions()">
+        </div>
+        <div class="form-group">
+          <div class="form-label">To</div>
+          <input type="date" class="form-control" id="f-to" onchange="renderTransactions()">
+        </div>
+        <div class="form-group">
+          <div class="form-label">Sort By</div>
+          <select class="form-control" id="f-sort" onchange="renderTransactions()">
+            <option value="date-desc">Date (Newest)</option>
+            <option value="date-asc">Date (Oldest)</option>
+            <option value="amount-desc">Amount (High)</option>
+            <option value="amount-asc">Amount (Low)</option>
+          </select>
+        </div>
+        <div class="form-group" style="display:flex;align-items:flex-end">
+          <button class="btn btn-ghost btn-sm" onclick="clearFilters()"><i class="fas fa-times"></i> Clear</button>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="card" style="padding:0;overflow:hidden">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Description / Notes</th>
+                <th>Tags</th>
+                <th>Payment</th>
+                <th style="text-align:right">Amount</th>
+                <th style="text-align:right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tx-body"></tbody>
+          </table>
+        </div>
+        <div id="tx-empty" class="empty-state" style="display:none">
+          <div class="empty-icon"><i class="fas fa-receipt"></i></div>
+          <h3>No transactions found</h3>
+          <p>Try adjusting your filters or add a new transaction</p>
+        </div>
+        <div id="tx-footer" style="padding:12px 18px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+          <span id="tx-count-text" style="font-size:.75rem;color:var(--muted)"></span>
+          <span id="tx-total-text" style="font-family:var(--fm);font-size:.78rem;color:var(--muted2)"></span>
+        </div>
+      </div>
+    </div><!-- /page-transactions -->
+
+    <!-- ==================================================
+         PAGE: BUDGETS
+         ================================================== -->
+    <div class="page" id="page-budgets">
+
+      <h2 style="font-size:1.3rem;font-weight:800;letter-spacing:-.3px;margin-bottom:4px">Monthly Budgets</h2>
+      <p style="font-size:.78rem;color:var(--muted);margin-bottom:22px">Set spending limits per category</p>
+
+      <div class="g-left">
+
+        <!-- Set Budget Form -->
+        <div class="card" style="align-self:start">
+          <div class="card-head"><div class="card-title-lg">Set Budget Limit</div></div>
+
+          <div class="form-group">
+            <div class="form-label">Category</div>
+            <select class="form-control" id="b-cat">
+              <option value="Food">🍽️ Food &amp; Dining</option>
+              <option value="Transportation">🚗 Transportation</option>
+              <option value="Housing">🏠 Housing &amp; Rent</option>
+              <option value="Utilities">⚡ Utilities</option>
+              <option value="Healthcare">🏥 Healthcare</option>
+              <option value="Entertainment">🎬 Entertainment</option>
+              <option value="Education">📚 Education</option>
+              <option value="Shopping">🛍️ Shopping</option>
+              <option value="Other">📦 Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">Monthly Limit</div>
+            <div class="input-group">
+              <span class="input-prefix" id="b-sym">₹</span>
+              <input type="number" class="form-control" id="b-limit" placeholder="5000" min="1" step="1">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">Alert at (%)</div>
+            <input type="range" id="b-alert-pct" min="50" max="100" value="80"
+              oninput="document.getElementById('b-alert-val').textContent = this.value + '%'"
+              style="width:100%;accent-color:var(--accent);cursor:pointer">
+            <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-top:4px">
+              <span>50%</span>
+              <span id="b-alert-val" style="color:var(--accent);font-weight:700">80%</span>
+              <span>100%</span>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" style="width:100%" onclick="saveBudget()">
+            <i class="fas fa-save"></i> Save Budget
+          </button>
+        </div>
+
+        <!-- Budget Status -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title-lg">Budget Status</div>
+            <span style="font-size:.72rem;color:var(--muted)" id="budget-month-label"></span>
+          </div>
+          <div id="budget-list">
+            <div class="empty-state">
+              <div class="empty-icon"><i class="fas fa-wallet"></i></div>
+              <h3>No budgets set</h3>
+              <p>Create your first budget limit on the left</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /page-budgets -->
+
+    <!-- ==================================================
+         PAGE: SAVINGS GOALS
+         ================================================== -->
+    <div class="page" id="page-goals">
+
+      <h2 style="font-size:1.3rem;font-weight:800;letter-spacing:-.3px;margin-bottom:4px">Savings Goals</h2>
+      <p style="font-size:.78rem;color:var(--muted);margin-bottom:22px">Stay on track with your financial targets</p>
+
+      <div class="g-left">
+
+        <!-- Create Goal Form -->
+        <div class="card" style="align-self:start">
+          <div class="card-head"><div class="card-title-lg">Create New Goal</div></div>
+
+          <div class="form-group">
+            <div class="form-label">Goal Name</div>
+            <input type="text" class="form-control" id="g-name" placeholder="e.g. Emergency Fund">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group" style="margin-bottom:0">
+              <div class="form-label">Target Amount</div>
+              <div class="input-group">
+                <span class="input-prefix" id="g-sym">₹</span>
+                <input type="number" class="form-control" id="g-target" placeholder="50000" min="1">
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <div class="form-label">Already Saved</div>
+              <div class="input-group">
+                <span class="input-prefix" id="g-sym2">₹</span>
+                <input type="number" class="form-control" id="g-saved" placeholder="0" min="0">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row" style="margin-top:14px">
+            <div class="form-group" style="margin-bottom:0">
+              <div class="form-label">Target Date</div>
+              <input type="date" class="form-control" id="g-date">
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <div class="form-label">Priority</div>
+              <select class="form-control" id="g-priority">
+                <option value="high">🔴 High</option>
+                <option value="medium" selected>🟡 Medium</option>
+                <option value="low">🟢 Low</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top:14px">
+            <div class="form-label">Description (optional)</div>
+            <input type="text" class="form-control" id="g-desc" placeholder="Why is this goal important?">
+          </div>
+
+          <button class="btn btn-primary" style="width:100%;margin-top:6px" onclick="saveGoal()">
+            <i class="fas fa-plus"></i> Add Goal
+          </button>
+        </div>
+
+        <!-- Goals List -->
+        <div id="goals-list">
+          <div class="empty-state">
+            <div class="empty-icon"><i class="fas fa-bullseye"></i></div>
+            <h3>No savings goals yet</h3>
+            <p>Create your first goal to start tracking progress</p>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /page-goals -->
+
+    <!-- ==================================================
+         PAGE: RECURRING
+         ================================================== -->
+    <div class="page" id="page-recurring">
+
+      <h2 style="font-size:1.3rem;font-weight:800;letter-spacing:-.3px;margin-bottom:4px">Recurring Transactions</h2>
+      <p style="font-size:.78rem;color:var(--muted);margin-bottom:22px">Autotrack subscriptions, rent, salary &amp; more</p>
+
+      <div class="g-left">
+
+        <!-- Add Recurring Form -->
+        <div class="card" style="align-self:start">
+          <div class="card-head"><div class="card-title-lg">Add Recurring</div></div>
+
+          <div class="type-toggle">
+            <button class="type-btn exp active" id="rt-exp" onclick="setRecType('expense')">Expense</button>
+            <button class="type-btn inc"         id="rt-inc" onclick="setRecType('income')">Income</button>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">Name</div>
+            <input type="text" class="form-control" id="r-name" placeholder="e.g. Rent, Netflix, Salary">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group" style="margin-bottom:0">
+              <div class="form-label">Category</div>
+              <select class="form-control" id="r-cat">
+                <option value="Housing">Housing</option>
+                <option value="Food">Food</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Transportation">Transportation</option>
+                <option value="Education">Education</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Salary">Salary</option>
+                <option value="Freelance">Freelance</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <div class="form-label">Frequency</div>
+              <select class="form-control" id="r-freq">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly" selected>Monthly</option>
+                <option value="quarterly">Quarterly</option>
+                <option value="yearly">Yearly</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top:14px">
+            <div class="form-label">Amount</div>
+            <div class="input-group">
+              <span class="input-prefix" id="r-sym">₹</span>
+              <input type="number" class="form-control" id="r-amount" placeholder="0.00" min="1" step="0.01">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">Next Due Date</div>
+            <input type="date" class="form-control" id="r-date">
+          </div>
+
+          <button class="btn btn-primary" style="width:100%" onclick="saveRecurring()">
+            <i class="fas fa-plus"></i> Add Recurring
+          </button>
+        </div>
+
+        <!-- Recurring List -->
+        <div>
+          <div id="rec-summary" class="card" style="margin-bottom:16px"></div>
+          <div class="card">
+            <div class="card-head">
+              <div class="card-title-lg">Recurring List</div>
+              <span id="rec-count" style="font-size:.72rem;color:var(--muted)"></span>
+            </div>
+            <div id="rec-list">
+              <div class="empty-state" style="padding:36px 0">
+                <div class="empty-icon"><i class="fas fa-rotate"></i></div>
+                <h3>No recurring transactions</h3>
+                <p>Add subscriptions, rent, or salary above</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /page-recurring -->
+
+    <!-- ==================================================
+         PAGE: ANALYTICS  (login-gated)
+         ================================================== -->
+    <div class="page" id="page-analytics">
+
+      <!-- Login wall shown when logged out -->
+      <div id="analytics-login-wall" style="display:none">
+        <div class="login-wall-card">
+          <div class="login-wall-icon"><i class="fas fa-chart-line"></i></div>
+          <h2>Analytics requires sign-in</h2>
+          <p>Your detailed financial insights are securely stored in the cloud. Sign in to access your Analytics dashboard.</p>
+          <button class="btn btn-primary" onclick="document.getElementById('auth-screen').style.display='flex'">
+            <i class="fas fa-right-to-bracket"></i> Sign In to View Analytics
+          </button>
+        </div>
+      </div>
+
+      <!-- Real analytics content -->
+      <div id="analytics-content">
+        <h2 style="font-size:1.3rem;font-weight:800;letter-spacing:-.3px;margin-bottom:4px">Analytics</h2>
+        <p style="font-size:.78rem;color:var(--muted);margin-bottom:22px">Deep dive into your financial patterns</p>
+
+        <!-- 12-month line chart -->
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-head">
+            <div class="card-title-lg">12-Month Trend</div>
+            <div style="display:flex;gap:14px;align-items:center;font-size:.72rem">
+              <span style="display:flex;align-items:center;gap:5px">
+                <span style="width:12px;height:3px;background:var(--income);border-radius:99px;display:inline-block"></span> Income
+              </span>
+              <span style="display:flex;align-items:center;gap:5px">
+                <span style="width:12px;height:3px;background:var(--expense);border-radius:99px;display:inline-block"></span> Expenses
+              </span>
+            </div>
+          </div>
+          <div class="chart-wrap" style="height:240px"><canvas id="chart-line"></canvas></div>
+        </div>
+
+        <div class="g2" style="margin-bottom:20px">
+          <!-- All-time donut -->
+          <div class="card">
+            <div class="card-head"><div class="card-title-lg">All-Time Spending</div></div>
+            <div class="chart-wrap" style="height:220px"><canvas id="chart-donut"></canvas></div>
+          </div>
+
+          <!-- Key metrics -->
+          <div class="card">
+            <div class="card-head"><div class="card-title-lg">Key Metrics</div></div>
+            <div id="analytics-metrics"></div>
+            <div class="divider"></div>
+            <div class="card-title" style="margin-bottom:12px">Top Categories (All Time)</div>
+            <div id="analytics-top-cats"></div>
+          </div>
+        </div>
+
+        <!-- Daily spending bar -->
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title-lg">Daily Spending – Last 30 Days</div>
+            <span style="font-size:.72rem;color:var(--muted)">Each bar = one day</span>
+          </div>
+          <div class="chart-wrap" style="height:200px"><canvas id="chart-daily"></canvas></div>
+        </div>
+      </div>
+
+    </div><!-- /page-analytics -->
+
+    <!-- ==================================================
+         PAGE: SETTINGS  (login-gated)
+         ================================================== -->
+    <div class="page" id="page-settings">
+
+      <!-- Login wall shown when logged out -->
+      <div id="settings-login-wall" style="display:none">
+        <div class="login-wall-card">
+          <div class="login-wall-icon"><i class="fas fa-gear"></i></div>
+          <h2>Settings requires sign-in</h2>
+          <p>Sign in to save your preferences, export your data, and manage your Spendly account.</p>
+          <button class="btn btn-primary" onclick="document.getElementById('auth-screen').style.display='flex'">
+            <i class="fas fa-right-to-bracket"></i> Sign In to Access Settings
+          </button>
+        </div>
+      </div>
+
+      <!-- Real settings content -->
+      <div id="settings-content">
+        <h2 style="font-size:1.3rem;font-weight:800;letter-spacing:-.3px;margin-bottom:4px">Settings</h2>
+        <p style="font-size:.78rem;color:var(--muted);margin-bottom:22px">Customize Spendly to your needs</p>
+
+        <div class="g2">
+
+          <!-- Left: Profile & Preferences -->
+          <div>
+            <div class="card" style="margin-bottom:16px">
+              <div class="card-head"><div class="card-title-lg">Profile</div></div>
+              <div class="form-group">
+                <div class="form-label">Your Name</div>
+                <input type="text" class="form-control" id="s-name" placeholder="e.g. Nejamul Haque" oninput="saveSettings()">
+              </div>
+              <div class="form-group">
+                <div class="form-label">Default Currency</div>
+                <select class="form-control" id="s-currency" onchange="setCurrency(this.value)">
+                  <option value="INR">₹ INR – Indian Rupee</option>
+                  <option value="USD">$ USD – US Dollar</option>
+                  <option value="EUR">€ EUR – Euro</option>
+                  <option value="GBP">£ GBP – Pound</option>
+                  <option value="JPY">¥ JPY – Yen</option>
+                  <option value="CAD">CA$ CAD – Canadian</option>
+                  <option value="AUD">A$ AUD – Australian</option>
+                  <option value="SGD">S$ SGD – Singapore</option>
+                  <option value="BDT">৳ BDT – Bangladeshi</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <div class="form-label">Monthly Income (for savings rate)</div>
+                <div class="input-group">
+                  <span class="input-prefix" id="s-sym">₹</span>
+                  <input type="number" class="form-control" id="s-income" placeholder="50000" oninput="saveSettings()">
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-head"><div class="card-title-lg">Preferences</div></div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <h4>Budget Alerts</h4>
+                  <p>Show warnings when approaching limits</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="pref-alerts" onchange="saveSettings()" checked>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <h4>Compact Table View</h4>
+                  <p>Show fewer columns on transactions page</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="pref-compact" onchange="saveSettings()">
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Data & About -->
+          <div>
+            <div class="card" style="margin-bottom:16px">
+              <div class="card-head"><div class="card-title-lg">Data Management</div></div>
+              <p style="font-size:.78rem;color:var(--muted);margin-bottom:16px">
+                Export a backup or import previous data.
+              </p>
+              <div style="display:flex;gap:10px;flex-wrap:wrap">
+                <button class="btn btn-success" onclick="exportJSON()"><i class="fas fa-download"></i> Export Backup</button>
+                <button class="btn btn-ghost" onclick="document.getElementById('import-file').click()"><i class="fas fa-upload"></i> Import Backup</button>
+                <button class="btn btn-success" onclick="exportCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
+              </div>
+              <input type="file" id="import-file" accept=".json" style="display:none" onchange="importJSON(this)">
+            </div>
+
+            <div class="card" style="border-color:rgba(255,107,107,.2);margin-bottom:16px">
+              <div class="card-head">
+                <div class="card-title-lg" style="color:var(--expense)">
+                  <i class="fas fa-triangle-exclamation"></i> Danger Zone
+                </div>
+              </div>
+              <p style="font-size:.78rem;color:var(--muted);margin-bottom:16px">
+                Permanently deletes all data. Cannot be undone.
+              </p>
+              <button class="btn btn-danger" onclick="confirmClearAll()">
+                <i class="fas fa-trash-alt"></i> Delete All Data
+              </button>
+            </div>
+
+            <div class="card" style="border-color:rgba(0,212,170,.1)">
+              <div class="card-title" style="margin-bottom:12px">About Spendly</div>
+              <div id="about-stats"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /page-settings -->
+
+  </div><!-- /content -->
+</main>
+
+<!-- ============================================================
+     MODAL: ADD / EDIT TRANSACTION
+     ============================================================ -->
+<div class="overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+
+    <div class="modal-head">
+      <div class="modal-title" id="modal-title">Add Transaction</div>
+      <button class="modal-close" onclick="closeModal()" aria-label="Close modal">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Income / Expense Toggle -->
+    <div class="type-toggle">
+      <button class="type-btn exp active" id="tt-exp" onclick="setType('expense')">
+        <i class="fas fa-arrow-up"></i> Expense
+      </button>
+      <button class="type-btn inc" id="tt-inc" onclick="setType('income')">
+        <i class="fas fa-arrow-down"></i> Income
+      </button>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group" style="margin-bottom:0">
+        <div class="form-label">Date *</div>
+        <input type="date" class="form-control" id="m-date" required>
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <div class="form-label">Category *</div>
+        <select class="form-control" id="m-cat" required></select>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-top:14px">
+      <div class="form-label">Amount *</div>
+      <div class="input-group">
+        <span class="input-prefix" id="m-sym">₹</span>
+        <input type="number" class="form-control" id="m-amount" placeholder="0.00" step="0.01" min="0.01" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="form-label">Description</div>
+      <input type="text" class="form-control" id="m-desc" placeholder="What was this for?">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group" style="margin-bottom:0">
+        <div class="form-label">Payment Method</div>
+        <select class="form-control" id="m-payment">
+          <option value="">– Select –</option>
+          <option>Cash</option>
+          <option>Card</option>
+          <option>UPI / GPay</option>
+          <option>Net Banking</option>
+          <option>EMI</option>
+          <option>Cheque</option>
+          <option>Crypto</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <div class="form-label">Tags (comma-separated)</div>
+        <input type="text" class="form-control" id="m-tags" placeholder="e.g. work, urgent">
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-top:14px">
+      <div class="form-label">Notes</div>
+      <textarea class="form-control" id="m-notes" placeholder="Any extra details..."></textarea>
+    </div>
+
+    <input type="hidden" id="m-edit-id">
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveTransaction()">
+        <i class="fas fa-save"></i> <span id="modal-save-label">Save</span>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL: CONFIRM / DELETE DIALOG
+     ============================================================ -->
+<div class="overlay" id="confirm-overlay">
+  <div class="modal" style="max-width:380px" role="alertdialog" aria-modal="true">
+    <div class="modal-head">
+      <div class="modal-title" id="confirm-title">Confirm</div>
+      <button class="modal-close" onclick="closeConfirm()"><i class="fas fa-times"></i></button>
+    </div>
+    <p id="confirm-msg" style="color:var(--muted2);font-size:.88rem;margin-bottom:20px"></p>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeConfirm()">Cancel</button>
+      <button class="btn btn-danger" id="confirm-btn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     TOAST NOTIFICATION CONTAINER
+     ============================================================ -->
+<div id="toast-container"></div>
+
+<!-- ============================================================
+     SPENDLY SCRIPT
+     ============================================================ -->
+<!--
+  ⚠️  type="module" is REQUIRED for Firebase ES module imports to work.
+  Chart.js is loaded via CDN above and remains available globally.
+-->
+<script type="module" src="script.js"></script>
+
+</body>
+</html>
+

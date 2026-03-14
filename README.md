@@ -1,8 +1,8 @@
-# 💰 Spendly — Smart Finance Tracker
+# 💰 Nestfy — Smart Finance Tracker
 
 <div align="center">
 
-![Spendly Banner](https://img.shields.io/badge/Spendly-Smart%20Finance%20Tracker-00d4aa?style=for-the-badge&logo=firebase&logoColor=white)
+![nestly Banner](https://img.shields.io/badge/Nestfy-Smart%20Finance%20Tracker-00d4aa?style=for-the-badge&logo=firebase&logoColor=white)
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Firebase-orange?style=for-the-badge&logo=firebase)](https://expence-tracker-3e97b.web.app)
 [![PWA](https://img.shields.io/badge/PWA-Installable-blue?style=for-the-badge&logo=googlechrome&logoColor=white)](https://expence-tracker-3e97b.web.app)
@@ -11,7 +11,7 @@
 
 **A beautiful, full-featured personal finance tracker built with vanilla JavaScript and Firebase.**
 
-[🌐 Live App](https://expence-tracker-3e97b.web.app) · [🐛 Report Bug](https://github.com/NejamulHaque/spendly/issues) · [✨ Request Feature](https://github.com/NejamulHaque/spendly/issues)
+[🌐 Live App](https://expence-tracker-3e97b.web.app) · [🐛 Report Bug](https://github.com/NejamulHaque/nestfy/issues) · [✨ Request Feature](https://github.com/NejamulHaque/nestfy/issues)
 
 </div>
 
@@ -100,7 +100,7 @@
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/spendly.git
+git clone https://github.com/yourusername/nestfy.git
 cd spendly
 ```
 

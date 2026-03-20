@@ -1,0 +1,175 @@
+<svg width="100%" viewBox="0 0 680 900" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient id="gAccent" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#00d4aa"/>
+    <stop offset="100%" stop-color="#7c6aff"/>
+  </linearGradient>
+  <linearGradient id="gTeal" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#00e8bc"/>
+    <stop offset="100%" stop-color="#00b894"/>
+  </linearGradient>
+  <linearGradient id="gPurp" x1="0" y1="1" x2="1" y2="0">
+    <stop offset="0%" stop-color="#7c6aff"/>
+    <stop offset="100%" stop-color="#a78bfa"/>
+  </linearGradient>
+  <linearGradient id="gIconBg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#0d1117"/>
+    <stop offset="100%" stop-color="#111828"/>
+  </linearGradient>
+  <linearGradient id="gOrbit" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="#00d4aa" stop-opacity="0"/>
+    <stop offset="50%" stop-color="#00d4aa"/>
+    <stop offset="100%" stop-color="#00d4aa" stop-opacity="0"/>
+  </linearGradient>
+</defs>
+
+<!-- ─────────────────────────────────────
+     SECTION 1 — ICON MARK SHOWCASE
+     ───────────────────────────────────── -->
+<text font-family="'Outfit',sans-serif" font-size="11" font-weight="500" letter-spacing="2" fill="var(--color-text-secondary)" x="340" y="36" text-anchor="middle" style="fill:rgb(194, 192, 182);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:11px;font-weight:500;text-anchor:middle;dominant-baseline:auto">HEX COIN MARK</text>
+
+<!-- 192×192 size — main showcase -->
+<rect x="244" y="52" width="192" height="192" rx="46" fill="url(#gIconBg)" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- Outer glow ring (subtle) -->
+<circle cx="340" cy="148" r="72" fill="none" stroke="#00d4aa" stroke-width="0.8" opacity="0.18" style="fill:none;stroke:rgb(0, 212, 170);color:rgb(255, 255, 255);stroke-width:0.8px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.18;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- Hexagon — outer stroke -->
+<polygon points="340,96 382,120 382,168 340,192 298,168 298,120" fill="none" stroke="url(#gAccent)" stroke-width="2.5" style="fill:none;color:rgb(255, 255, 255);stroke-width:2.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- Hexagon — inner fill (very subtle) -->
+<polygon points="340,96 382,120 382,168 340,192 298,168 298,120" fill="#00d4aa" fill-opacity="0.04" style="fill:rgb(0, 212, 170);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- Inner hexagon accent line -->
+<polygon points="340,106 372,124 372,160 340,178 308,160 308,124" fill="none" stroke="#00d4aa" stroke-width="0.6" opacity="0.25" style="fill:none;stroke:rgb(0, 212, 170);color:rgb(255, 255, 255);stroke-width:0.6px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.25;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- N letterform — custom drawn, crisp -->
+<path d="M316 172 L316 124 L364 172 L364 124" fill="none" stroke="url(#gAccent)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" style="fill:none;color:rgb(255, 255, 255);stroke-width:8px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- Orbit ring — dashed -->
+<circle cx="340" cy="148" r="56" fill="none" stroke="url(#gOrbit)" stroke-width="1" stroke-dasharray="4 6" opacity="0.6" style="fill:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-dasharray:4px, 6px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.6;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- Orbit dot — teal -->
+<circle cx="396" cy="148" r="4.5" fill="#00d4aa" style="fill:rgb(0, 212, 170);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<!-- Orbit dot shadow -->
+<circle cx="396" cy="148" r="7" fill="#00d4aa" opacity="0.15" style="fill:rgb(0, 212, 170);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.15;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- Corner accent dots — subtle -->
+<circle cx="264" cy="72" r="2" fill="#00d4aa" opacity="0.4" style="fill:rgb(0, 212, 170);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.4;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<circle cx="416" cy="72" r="2" fill="#7c6aff" opacity="0.4" style="fill:rgb(124, 106, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.4;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<circle cx="264" cy="224" r="2" fill="#7c6aff" opacity="0.4" style="fill:rgb(124, 106, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.4;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<circle cx="416" cy="224" r="2" fill="#00d4aa" opacity="0.4" style="fill:rgb(0, 212, 170);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.4;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- Version label -->
+<text font-family="'JetBrains Mono',monospace" font-size="10" fill="#00d4aa" opacity="0.5" x="340" y="240" text-anchor="middle" letter-spacing="1" style="fill:rgb(0, 212, 170);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;JetBrains Mono&quot;, monospace;font-size:10px;font-weight:400;text-anchor:middle;dominant-baseline:auto">v2.0</text>
+
+<!-- ─────────────────────────────────────
+     SECTION 2 — ICON SIZE VARIANTS
+     ───────────────────────────────────── -->
+<line x1="48" y1="268" x2="632" y2="268" stroke="var(--color-border-tertiary)" stroke-width="0.5" style="fill:rgb(0, 0, 0);stroke:rgba(222, 220, 209, 0.15);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text font-family="'Outfit',sans-serif" font-size="11" font-weight="500" letter-spacing="2" fill="var(--color-text-secondary)" x="340" y="294" text-anchor="middle" style="fill:rgb(194, 192, 182);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:11px;font-weight:500;text-anchor:middle;dominant-baseline:auto">ICON SIZE VARIANTS</text>
+
+<!-- 96×96 -->
+<text font-family="'Outfit',sans-serif" font-size="11" fill="var(--color-text-secondary)" x="104" y="322" text-anchor="middle" style="fill:rgb(194, 192, 182);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:11px;font-weight:400;text-anchor:middle;dominant-baseline:auto">96px</text>
+<rect x="56" y="330" width="96" height="96" rx="24" fill="url(#gIconBg)" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<polygon points="104,351 126,363 126,387 104,399 82,387 82,363" fill="none" stroke="url(#gAccent)" stroke-width="2" style="fill:none;color:rgb(255, 255, 255);stroke-width:2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<path d="M90 391 L90 359 L118 391 L118 359" fill="none" stroke="url(#gAccent)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" style="fill:none;color:rgb(255, 255, 255);stroke-width:5.5px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<circle cx="104" cy="375" r="28" fill="none" stroke="#00d4aa" stroke-width="0.8" stroke-dasharray="3 5" opacity="0.5" style="fill:none;stroke:rgb(0, 212, 170);color:rgb(255, 255, 255);stroke-width:0.8px;stroke-dasharray:3px, 5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<circle cx="132" cy="375" r="3.5" fill="#00d4aa" style="fill:rgb(0, 212, 170);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- 64×64 -->
+<text font-family="'Outfit',sans-serif" font-size="11" fill="var(--color-text-secondary)" x="228" y="322" text-anchor="middle" style="fill:rgb(194, 192, 182);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:11px;font-weight:400;text-anchor:middle;dominant-baseline:auto">64px</text>
+<rect x="196" y="330" width="64" height="64" rx="16" fill="url(#gIconBg)" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<polygon points="228,344 246,354 246,374 228,384 210,374 210,354" fill="none" stroke="url(#gAccent)" stroke-width="1.8" style="fill:none;color:rgb(255, 255, 255);stroke-width:1.8px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<path d="M217 380 L217 358 L239 380 L239 358" fill="none" stroke="url(#gAccent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" style="fill:none;color:rgb(255, 255, 255);stroke-width:4px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<circle cx="228" cy="369" r="20" fill="none" stroke="#00d4aa" stroke-width="0.7" stroke-dasharray="2.5 4" opacity="0.5" style="fill:none;stroke:rgb(0, 212, 170);color:rgb(255, 255, 255);stroke-width:0.7px;stroke-dasharray:2.5px, 4px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<circle cx="248" cy="369" r="3" fill="#00d4aa" style="fill:rgb(0, 212, 170);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- 48×48 -->
+<text font-family="'Outfit',sans-serif" font-size="11" fill="var(--color-text-secondary)" x="316" y="322" text-anchor="middle" style="fill:rgb(194, 192, 182);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:11px;font-weight:400;text-anchor:middle;dominant-baseline:auto">48px</text>
+<rect x="292" y="330" width="48" height="48" rx="12" fill="url(#gIconBg)" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<polygon points="316,341 330,349 330,365 316,373 302,365 302,349" fill="none" stroke="url(#gAccent)" stroke-width="1.5" style="fill:none;color:rgb(255, 255, 255);stroke-width:1.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<path d="M307 369 L307 351 L325 369 L325 351" fill="none" stroke="url(#gAccent)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" style="fill:none;color:rgb(255, 255, 255);stroke-width:3.2px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<circle cx="316" cy="360" r="15" fill="none" stroke="#00d4aa" stroke-width="0.6" stroke-dasharray="2 3.5" opacity="0.5" style="fill:none;stroke:rgb(0, 212, 170);color:rgb(255, 255, 255);stroke-width:0.6px;stroke-dasharray:2px, 3.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.5;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<circle cx="331" cy="360" r="2.5" fill="#00d4aa" style="fill:rgb(0, 212, 170);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- 32×32 -->
+<text font-family="'Outfit',sans-serif" font-size="11" fill="var(--color-text-secondary)" x="388" y="322" text-anchor="middle" style="fill:rgb(194, 192, 182);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:11px;font-weight:400;text-anchor:middle;dominant-baseline:auto">32px</text>
+<rect x="372" y="330" width="32" height="32" rx="8" fill="url(#gIconBg)" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<polygon points="388,338 399,344 399,356 388,362 377,356 377,344" fill="none" stroke="#00d4aa" stroke-width="1.2" style="fill:none;stroke:rgb(0, 212, 170);color:rgb(255, 255, 255);stroke-width:1.2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<path d="M381 359 L381 347 L395 359 L395 347" fill="none" stroke="url(#gAccent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="fill:none;color:rgb(255, 255, 255);stroke-width:2.2px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<circle cx="399" cy="353" r="1.8" fill="#00d4aa" style="fill:rgb(0, 212, 170);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- On light bg preview -->
+<text font-family="'Outfit',sans-serif" font-size="11" fill="var(--color-text-secondary)" x="508" y="322" text-anchor="middle" style="fill:rgb(194, 192, 182);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:11px;font-weight:400;text-anchor:middle;dominant-baseline:auto">Light bg</text>
+<rect x="464" y="330" width="88" height="88" rx="22" fill="#f1f5f9" style="fill:rgb(241, 245, 249);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<polygon points="508,352 532,366 532,394 508,408 484,394 484,366" fill="none" stroke="url(#gAccent)" stroke-width="2.2" style="fill:none;color:rgb(255, 255, 255);stroke-width:2.2px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<path d="M493 402 L493 372 L523 402 L523 372" fill="none" stroke="url(#gAccent)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="fill:none;color:rgb(255, 255, 255);stroke-width:5px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<circle cx="508" cy="387" r="27" fill="none" stroke="#00d4aa" stroke-width="0.9" stroke-dasharray="3 5" opacity="0.6" style="fill:none;stroke:rgb(0, 212, 170);color:rgb(255, 255, 255);stroke-width:0.9px;stroke-dasharray:3px, 5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:0.6;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<circle cx="535" cy="387" r="4" fill="#00d4aa" style="fill:rgb(0, 212, 170);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- ─────────────────────────────────────
+     SECTION 3 — WORDMARK
+     ───────────────────────────────────── -->
+<line x1="48" y1="450" x2="632" y2="450" stroke="var(--color-border-tertiary)" stroke-width="0.5" style="fill:rgb(0, 0, 0);stroke:rgba(222, 220, 209, 0.15);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text font-family="'Outfit',sans-serif" font-size="11" font-weight="500" letter-spacing="2" fill="var(--color-text-secondary)" x="340" y="476" text-anchor="middle" style="fill:rgb(194, 192, 182);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:11px;font-weight:500;text-anchor:middle;dominant-baseline:auto">WORDMARK</text>
+
+<!-- Large wordmark — gradient split -->
+<text x="340" y="548" text-anchor="middle" font-family="'Outfit',sans-serif" font-weight="900" font-size="72" letter-spacing="-3" fill="url(#gAccent)" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:72px;font-weight:900;text-anchor:middle;dominant-baseline:auto">Nestfy</text>
+<text x="340" y="572" text-anchor="middle" font-family="'Outfit',sans-serif" font-weight="400" font-size="12" letter-spacing="5" fill="var(--color-text-secondary)" style="fill:rgb(194, 192, 182);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:12px;font-weight:400;text-anchor:middle;dominant-baseline:auto">SMART FINANCE TRACKER</text>
+
+<!-- ─────────────────────────────────────
+     SECTION 4 — COMBINED LOCKUPS
+     ───────────────────────────────────── -->
+<line x1="48" y1="598" x2="632" y2="598" stroke="var(--color-border-tertiary)" stroke-width="0.5" style="fill:rgb(0, 0, 0);stroke:rgba(222, 220, 209, 0.15);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text font-family="'Outfit',sans-serif" font-size="11" font-weight="500" letter-spacing="2" fill="var(--color-text-secondary)" x="340" y="624" text-anchor="middle" style="fill:rgb(194, 192, 182);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:11px;font-weight:500;text-anchor:middle;dominant-baseline:auto">COMBINED LOCKUPS</text>
+
+<!-- Horizontal lockup — dark -->
+<rect x="48" y="638" width="280" height="80" rx="16" fill="url(#gIconBg)" style="stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<!-- Mini icon -->
+<rect x="66" y="654" width="48" height="48" rx="13" fill="#1a2235" style="fill:rgb(26, 34, 53);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<polygon points="90,664 104,672 104,688 90,696 76,688 76,672" fill="none" stroke="url(#gAccent)" stroke-width="1.8" style="fill:none;color:rgb(255, 255, 255);stroke-width:1.8px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<path d="M80 692 L80 672 L100 692 L100 672" fill="none" stroke="url(#gAccent)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="fill:none;color:rgb(255, 255, 255);stroke-width:3.5px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<circle cx="104" cy="680" r="2.5" fill="#00d4aa" style="fill:rgb(0, 212, 170);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<!-- Wordmark next to icon -->
+<text x="126" y="683" font-family="'Outfit',sans-serif" font-weight="900" font-size="28" letter-spacing="-0.5" fill="white" style="fill:rgb(255, 255, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:28px;font-weight:900;text-anchor:start;dominant-baseline:auto">Nestfy</text>
+<text x="127" y="700" font-family="'Outfit',sans-serif" font-weight="400" font-size="10" letter-spacing="2.5" fill="#64748b" style="fill:rgb(100, 116, 139);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:10px;font-weight:400;text-anchor:start;dominant-baseline:auto">SMART FINANCE</text>
+
+<!-- Horizontal lockup — light -->
+<rect x="352" y="638" width="280" height="80" rx="16" fill="#f8fafc" style="fill:rgb(248, 250, 252);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<rect x="370" y="654" width="48" height="48" rx="13" fill="#e8f5f1" style="fill:rgb(232, 245, 241);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<polygon points="394,664 408,672 408,688 394,696 380,688 380,672" fill="none" stroke="url(#gAccent)" stroke-width="1.8" style="fill:none;color:rgb(255, 255, 255);stroke-width:1.8px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<path d="M384 692 L384 672 L404 692 L404 672" fill="none" stroke="url(#gAccent)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="fill:none;color:rgb(255, 255, 255);stroke-width:3.5px;stroke-linecap:round;stroke-linejoin:round;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<circle cx="408" cy="680" r="2.5" fill="#00d4aa" style="fill:rgb(0, 212, 170);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text x="430" y="683" font-family="'Outfit',sans-serif" font-weight="900" font-size="28" letter-spacing="-0.5" fill="#0f172a" style="fill:rgb(15, 23, 42);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:28px;font-weight:900;text-anchor:start;dominant-baseline:auto">Nestfy</text>
+<text x="431" y="700" font-family="'Outfit',sans-serif" font-weight="400" font-size="10" letter-spacing="2.5" fill="#94a3b8" style="fill:rgb(148, 163, 184);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:10px;font-weight:400;text-anchor:start;dominant-baseline:auto">SMART FINANCE</text>
+
+<!-- ─────────────────────────────────────
+     SECTION 5 — USAGE GUIDE
+     ───────────────────────────────────── -->
+<line x1="48" y1="740" x2="632" y2="740" stroke="var(--color-border-tertiary)" stroke-width="0.5" style="fill:rgb(0, 0, 0);stroke:rgba(222, 220, 209, 0.15);color:rgb(255, 255, 255);stroke-width:0.5px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text font-family="'Outfit',sans-serif" font-size="11" font-weight="500" letter-spacing="2" fill="var(--color-text-secondary)" x="340" y="766" text-anchor="middle" style="fill:rgb(194, 192, 182);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:11px;font-weight:500;text-anchor:middle;dominant-baseline:auto">USAGE GUIDE</text>
+
+<!-- Usage chips -->
+<rect x="48" y="780" width="110" height="30" rx="8" fill="#00d4aa" fill-opacity="0.1" style="fill:rgb(0, 212, 170);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text x="103" y="800" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="11" font-weight="600" fill="#00d4aa" style="fill:rgb(0, 212, 170);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:11px;font-weight:600;text-anchor:middle;dominant-baseline:auto">App Icon</text>
+
+<rect x="170" y="780" width="110" height="30" rx="8" fill="#7c6aff" fill-opacity="0.1" style="fill:rgb(124, 106, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text x="225" y="800" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="11" font-weight="600" fill="#7c6aff" style="fill:rgb(124, 106, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:11px;font-weight:600;text-anchor:middle;dominant-baseline:auto">Sidebar Logo</text>
+
+<rect x="292" y="780" width="110" height="30" rx="8" fill="#00d4aa" fill-opacity="0.1" style="fill:rgb(0, 212, 170);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text x="347" y="800" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="11" font-weight="600" fill="#00d4aa" style="fill:rgb(0, 212, 170);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:11px;font-weight:600;text-anchor:middle;dominant-baseline:auto">Auth Screen</text>
+
+<rect x="414" y="780" width="110" height="30" rx="8" fill="#7c6aff" fill-opacity="0.1" style="fill:rgb(124, 106, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text x="469" y="800" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="11" font-weight="600" fill="#7c6aff" style="fill:rgb(124, 106, 255);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:11px;font-weight:600;text-anchor:middle;dominant-baseline:auto">Topbar</text>
+
+<rect x="536" y="780" width="96" height="30" rx="8" fill="#ffd166" fill-opacity="0.12" style="fill:rgb(255, 209, 102);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, &quot;system-ui&quot;, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<text x="584" y="800" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="11" font-weight="600" fill="#ffd166" style="fill:rgb(255, 209, 102);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:11px;font-weight:600;text-anchor:middle;dominant-baseline:auto">Favicon</text>
+
+<text x="340" y="840" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="11" fill="var(--color-text-secondary)" style="fill:rgb(194, 192, 182);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:11px;font-weight:400;text-anchor:middle;dominant-baseline:auto">
+  Hex mark on dark bg · Wordmark in Outfit 900 · Gradient: #00d4aa → #7c6aff
+</text>
+<text x="340" y="860" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="11" fill="var(--color-text-secondary)" style="fill:rgb(194, 192, 182);stroke:none;color:rgb(255, 255, 255);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:Outfit, sans-serif;font-size:11px;font-weight:400;text-anchor:middle;dominant-baseline:auto">
+  Orbit dot accent: #00d4aa · Icon bg: #0d1117 · Min icon size: 32px
+</text>
+</svg>

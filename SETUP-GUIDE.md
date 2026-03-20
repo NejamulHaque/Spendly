@@ -1,146 +1,71 @@
-# Spendly Firebase Setup Guide
+# Spendly — Bug Fixes Applied
 
-Follow these steps to get login working in ~10 minutes.
-
----
-
-## Step 1 — Create a Firebase Project
-
-1. Go to https://console.firebase.google.com
-2. Click **"Add project"**
-3. Name it `spendly` (or anything you like)
-4. Disable Google Analytics if you want (optional)
-5. Click **Create project**
+## What Was Broken & What Was Fixed
 
 ---
 
-## Step 2 — Enable Authentication
+### Bug 1 — `firebase-config.js` was missing Firestore (`db` export)
 
-1. In the Firebase Console sidebar click **Authentication**
-2. Click **"Get started"**
-3. Under **Sign-in method** tab, enable:
-   - **Email/Password** → toggle ON → Save
-   - **Google** → toggle ON → enter your support email → Save
+**Problem:** `db.js` imports `db` from `firebase-config.js`, but the original
+`firebase-config.js` only initialized Auth — it never called `getFirestore()` and
+never exported `db`. This caused a silent crash on every Firestore read/write.
 
----
-
-## Step 3 — Create Firestore Database
-
-1. In the sidebar click **Firestore Database**
-2. Click **"Create database"**
-3. Choose **"Start in test mode"** (you can add security rules later)
-4. Select your nearest region → Click **Done**
+**Fix:** Added `getFirestore(app)` and `export { ..., db }` to `firebase-config.js`.
 
 ---
 
-## Step 4 — Get Your Config Keys
+### Bug 2 — Firebase SDK version mismatch
 
-1. Click the **gear icon ⚙️** next to "Project Overview" → **Project settings**
-2. Scroll to **"Your apps"** section
-3. Click the **`</>`** (Web) icon to register a web app
-4. Give it a nickname like `spendly-web`
-5. Click **Register app**
-6. You'll see a config block like this:
+**Problem:** `firebase-config.js` imported from version `10.12.2`, but `auth.js`
+and `db.js` imported from version `10.12.0`. Mixing versions of Firebase ES modules
+causes hard-to-debug runtime errors and can break Auth state sharing between modules.
 
-```js
-const firebaseConfig = {
-  apiKey: "AIzaSy...",
-  authDomain: "spendly-xxx.firebaseapp.com",
-  projectId: "spendly-xxx",
-  storageBucket: "spendly-xxx.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "1:123...:web:abc..."
-};
-```
+**Fix:** All three files now consistently import from `10.12.2`.
 
 ---
 
-## Step 5 — Paste Config into Spendly
+### Bug 3 — Google Sign-In popup blocked when opened from `file://`
 
-Open **`firebase-config.js`** and replace every `PASTE_YOUR_..._HERE` value:
+**Problem:** Firebase's `signInWithPopup` requires the page to be served over
+HTTP/HTTPS. Opening `index.html` directly from your file system (`file://`) causes
+the Google popup to fail silently or throw `auth/popup-blocked`.
 
-```js
-const firebaseConfig = {
-  apiKey:            "AIzaSy...",        // ← paste yours
-  authDomain:        "spendly-xxx...",   // ← paste yours
-  projectId:         "spendly-xxx",      // ← paste yours
-  storageBucket:     "spendly-xxx...",   // ← paste yours
-  messagingSenderId: "123456789",        // ← paste yours
-  appId:             "1:123...",         // ← paste yours
-};
-```
+**Fix (you must do this):** Serve the project from a local server. Options:
 
-Save the file.
-
----
-
-## Step 6 — Enable Google Sign-In (Authorized Domain)
-
-If you open the app from a local file (`file://`), Google Sign-In
-popup may be blocked. To fix this:
-
-**Option A — Use a local server (recommended)**
-
-Install Node.js, then in the project folder run:
+**Option A — Quickest (Node.js required):**
 ```bash
+cd /path/to/spendly
 npx serve .
 ```
-Then open http://localhost:3000
+Then open: http://localhost:3000
 
-**Option B — Use VS Code Live Server**
+**Option B — VS Code:**
+Install "Live Server" extension → right-click `index.html` → Open with Live Server
 
-Install the "Live Server" extension → Right-click `index.html` → Open with Live Server
-
-**Option C — Deploy to Firebase Hosting (free)**
-
+**Option C — Python (already installed on most systems):**
 ```bash
-npm install -g firebase-tools
-firebase login
-firebase init hosting
-firebase deploy
+cd /path/to/spendly
+python3 -m http.server 3000
 ```
+Then open: http://localhost:3000
 
 ---
 
-## Step 7 — Add Firestore Security Rules (Production)
+## Files Changed
 
-Once you're ready to go live, replace **test mode** rules with:
-
-```
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /users/{userId}/{document=**} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
-    }
-  }
-}
-```
-
-This ensures each user can only access their own data.
-
----
-
-## File Structure
-
-```
-spendly/
-├── index.html          ← Main app HTML + auth screen
-├── style.css           ← App styles
-├── auth.css            ← Login screen styles
-├── firebase-config.js  ← ⚠️ Your Firebase credentials go here
-├── auth.js             ← Login / signup / Google / logout logic
-├── db.js               ← All Firestore read/write operations
-└── app.js              ← Full app logic (wired to Firebase)
-```
-
----
-
-## Troubleshooting
-
-| Problem | Fix |
+| File | Change |
 |---|---|
-| "Firebase: Error (auth/configuration-not-found)" | You haven't pasted your config yet |
-| Google popup closes immediately | Open via localhost, not file:// |
-| "Missing or insufficient permissions" | Check Firestore is in test mode |
-| Data not saving | Check browser console for errors |
+| `firebase-config.js` | Added `getFirestore`, exported `db` |
+| `auth.js` | Changed SDK version `10.12.0` → `10.12.2` |
+| `db.js` | Changed SDK version `10.12.0` → `10.12.2` |
+| `index.html`, `script.js`, `style.css`, `auth.css` | Unchanged |
+
+---
+
+## Final Checklist
+
+- [ ] Replace all files in your project folder with these fixed versions
+- [ ] Serve from localhost (not `file://`) — see Bug 3 above
+- [ ] In Firebase Console → Authentication → Sign-in method: enable **Email/Password** AND **Google**
+- [ ] In Firebase Console → Firestore Database: create database in **test mode**
+- [ ] Open http://localhost:3000 and try signing in

@@ -1,5 +1,5 @@
 /* ============================================================
-   SPENDLY — auth.css  (Login / Signup Screen)
+   NESTFY — auth.css  (Login / Signup Screen)
    ============================================================ */
 
 #auth-screen {
@@ -227,4 +227,109 @@
   background: rgba(255,255,255,.07);
   border-radius: 5px;
   font-size: .6rem; color: var(--muted);
+}
+/* ════════════════════════════════════════════════════════════
+   LIGHT THEME — Auth Screen Overrides
+   ════════════════════════════════════════════════════════════ */
+body.light #auth-screen {
+  background: #e2e8f0;
+}
+body.light #auth-screen::before {
+  background:
+    radial-gradient(ellipse 60% 50% at 20% 20%, rgba(0,212,170,.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 80% 80%, rgba(124,106,255,.1) 0%, transparent 60%);
+}
+body.light .auth-card {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,.1) !important;
+  box-shadow: 0 24px 64px rgba(0,0,0,.12), 0 0 0 1px rgba(0,0,0,.04) !important;
+}
+body.light .auth-logo-sub { color: #64748b; }
+body.light .auth-tabs {
+  background: #f1f5f9;
+  border-color: rgba(0,0,0,.1);
+}
+body.light .auth-tab { color: #64748b; background: transparent; }
+body.light .auth-tab.active {
+  background: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 2px 8px rgba(0,0,0,.08);
+}
+body.light .auth-msg.error {
+  background: rgba(220,38,38,.06);
+  border-color: rgba(220,38,38,.2);
+  color: #dc2626;
+}
+body.light .auth-msg.success {
+  background: rgba(0,212,170,.06);
+  border-color: rgba(0,212,170,.25);
+  color: #047857;
+}
+body.light #auth-error {
+  background: rgba(220,38,38,.06);
+  border-color: rgba(220,38,38,.2);
+  color: #dc2626;
+}
+body.light #auth-success {
+  background: rgba(0,212,170,.06);
+  border-color: rgba(0,212,170,.25);
+  color: #047857;
+}
+body.light .btn-google {
+  background: #f8fafc;
+  border-color: rgba(0,0,0,.12);
+  color: #0f172a;
+}
+body.light .btn-google:hover {
+  background: #f1f5f9;
+  border-color: rgba(0,0,0,.18);
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+}
+body.light .auth-divider { color: #94a3b8; }
+body.light .auth-divider::before,
+body.light .auth-divider::after { background: rgba(0,0,0,.1); }
+body.light .form-label { color: #475569; }
+body.light .pw-toggle { color: #94a3b8; }
+body.light .pw-toggle:hover { color: #64748b; }
+body.light .forgot-link { color: #00d4aa; }
+body.light .forgot-link:hover { opacity: .75; }
+body.light .remember-row span { color: #64748b; }
+body.light .auth-footer { color: #64748b; }
+body.light .auth-footer a { color: #00d4aa; }
+body.light .back-btn { color: #64748b; }
+body.light .back-btn:hover { color: #0f172a; }
+body.light .forgot-title { color: #0f172a; }
+body.light .forgot-sub   { color: #64748b; }
+body.light .pw-strength-label { color: #64748b; }
+
+/* Login wall */
+body.light .login-wall-card {
+  background: #ffffff;
+  border-color: rgba(0,0,0,.1);
+  box-shadow: 0 24px 64px rgba(0,0,0,.1);
+}
+body.light .login-wall-card h2 { color: #0f172a; }
+body.light .login-wall-card p  { color: #64748b; }
+body.light .login-wall-icon {
+  background: linear-gradient(135deg, rgba(0,212,170,.1), rgba(124,106,255,.1));
+  border-color: rgba(0,212,170,.2);
+}
+
+/* User info sidebar */
+body.light .user-avatar {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+}
+body.light .sync-dot         { background: var(--accent); }
+body.light .sync-dot.offline { background: #ef4444; }
+body.light .sync-dot.syncing { background: #f59e0b; }
+body.light .btn-logout:hover {
+  background: rgba(239,68,68,.1);
+  color: #dc2626;
+}
+
+/* Nav locked */
+body.light .nav-item.nav-locked { opacity: .5; }
+body.light .nav-lock-badge {
+  background: rgba(0,0,0,.06);
+  color: #64748b;
 }

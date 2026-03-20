@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Terms &amp; Privacy — Nestfy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f; --card: #12121a; --card2: #1a1a26;
+      --border: rgba(255,255,255,.07); --border2: rgba(255,255,255,.11);
+      --text: #f0f0f8; --muted: #666680; --muted2: #9090b0;
+      --accent: #00d4aa; --accent2: #7c6aff;
+      --ff: 'Outfit', sans-serif;
+    }
+
+    body {
+      font-family: var(--ff);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 10% 10%, rgba(0,212,170,.06) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 60% at 90% 90%, rgba(124,106,255,.06) 0%, transparent 55%);
+      pointer-events: none; z-index: 0;
+    }
+
+    .wrapper {
+      position: relative; z-index: 1;
+      max-width: 780px; margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── Back button ── */
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      color: var(--accent); text-decoration: none;
+      font-size: .83rem; font-weight: 600;
+      padding: 8px 14px; border-radius: 10px;
+      border: 1px solid rgba(0,212,170,.2);
+      background: rgba(0,212,170,.05);
+      transition: all .18s; margin-bottom: 36px;
+    }
+    .back-btn:hover { background: rgba(0,212,170,.1); transform: translateX(-2px); }
+
+    /* ── Logo ── */
+    .logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
+    .logo-icon {
+      width: 48px; height: 48px; border-radius: 14px; flex-shrink: 0;
+      background: #0d1117;
+      border: 1px solid rgba(0,212,170,.22);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 20px rgba(0,212,170,.15);
+    }
+    .logo-icon svg { width: 34px; height: 34px; }
+    .logo-text {
+      font-size: 1.5rem; font-weight: 900; letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .logo-sub { font-size: .68rem; color: var(--muted); margin-top: 2px; letter-spacing: 1.5px; text-transform: uppercase; }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: flex; background: var(--card); border: 1px solid var(--border2);
+      border-radius: 14px; padding: 4px; margin-bottom: 28px; gap: 4px;
+    }
+    .tab-btn {
+      flex: 1; padding: 11px; text-align: center; border-radius: 11px;
+      border: none; font-family: var(--ff); font-size: .88rem; font-weight: 700;
+      cursor: pointer; transition: all .2s; background: transparent; color: var(--muted);
+    }
+    .tab-btn.active {
+      background: var(--card2); color: var(--text);
+      box-shadow: 0 2px 8px rgba(0,0,0,.4);
+    }
+    .tab-btn:hover:not(.active) { color: var(--muted2); }
+
+    /* ── Panels ── */
+    .panel { display: none; animation: fadeIn .22s ease; }
+    .panel.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── Card ── */
+    .card {
+      background: var(--card); border: 1px solid var(--border2);
+      border-radius: 20px; padding: 36px;
+      box-shadow: 0 16px 48px rgba(0,0,0,.4);
+    }
+
+    /* ── Typography ── */
+    .doc-title { font-size: 1.4rem; font-weight: 900; letter-spacing: -.4px; margin-bottom: 4px; }
+    .doc-date { font-size: .72rem; color: var(--muted); margin-bottom: 28px; }
+
+    h2 {
+      font-size: 1rem; font-weight: 800; color: var(--accent);
+      margin: 28px 0 10px; display: flex; align-items: center; gap: 8px;
+    }
+    h2::before {
+      content: ''; display: inline-block;
+      width: 3px; height: 16px; border-radius: 99px;
+      background: linear-gradient(var(--accent), var(--accent2));
+    }
+
+    p { color: var(--muted2); font-size: .9rem; margin-bottom: 12px; }
+
+    ul { padding-left: 0; margin-bottom: 14px; list-style: none; }
+    ul li {
+      color: var(--muted2); font-size: .9rem;
+      padding: 5px 0 5px 22px; position: relative;
+    }
+    ul li::before {
+      content: '✓'; position: absolute; left: 0;
+      color: var(--accent); font-weight: 700; font-size: .8rem;
+    }
+    ul li.no::before { content: '✗'; color: #ff6b6b; }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    strong { color: var(--text); font-weight: 700; }
+
+    .highlight {
+      background: rgba(0,212,170,.05); border: 1px solid rgba(0,212,170,.15);
+      border-radius: 12px; padding: 14px 16px; margin: 16px 0;
+      font-size: .85rem; color: var(--muted2);
+    }
+    .highlight strong { color: var(--accent); }
+
+    .contact-box {
+      margin-top: 28px; padding: 18px 20px;
+      background: var(--card2); border: 1px solid var(--border2);
+      border-radius: 14px; font-size: .85rem; color: var(--muted);
+    }
+    .contact-box a { font-weight: 600; }
+
+    hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+    @media (max-width: 600px) {
+      .card { padding: 24px 18px; }
+      .wrapper { padding: 28px 16px 60px; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- Back -->
+  <a href="https://expence-tracker-3e97b.web.app" class="back-btn">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+    Back to Nestfy
+  </a>
+
+  <!-- Logo with hex coin mark -->
+  <div class="logo-row">
+    <div class="logo-icon">
+      <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="lG" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#00d4aa"/>
+            <stop offset="100%" stop-color="#7c6aff"/>
+          </linearGradient>
+        </defs>
+        <polygon points="26,5 44,15 44,37 26,47 8,37 8,15" fill="none" stroke="url(#lG)" stroke-width="2"/>
+        <polygon points="26,10 39,18 39,34 26,42 13,34 13,18" fill="none" stroke="#00d4aa" stroke-width="0.5" opacity="0.25"/>
+        <path d="M15 40 L15 12 L37 40 L37 12" fill="none" stroke="url(#lG)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="26" cy="26" r="20" fill="none" stroke="#00d4aa" stroke-width="0.8" stroke-dasharray="3 5" opacity="0.45"/>
+        <circle cx="46" cy="26" r="3" fill="#00d4aa"/>
+      </svg>
+    </div>
+    <div>
+      <div class="logo-text">Nestfy</div>
+      <div class="logo-sub">Smart Finance Tracker</div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" id="tab-terms"   onclick="switchTab('terms')">Terms of Service</button>
+    <button class="tab-btn"        id="tab-privacy" onclick="switchTab('privacy')">Privacy Policy</button>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       TERMS OF SERVICE
+       ══════════════════════════════════════ -->
+  <div class="panel active" id="panel-terms">
+    <div class="card">
+      <div class="doc-title">Terms of Service</div>
+      <div class="doc-date">Last updated: March 2026</div>
+
+      <div class="highlight">
+        <strong>Summary:</strong> Nestfy is a free personal finance tracker. Use it responsibly, keep your account secure, and don't misuse the service. That's it! 🙂
+      </div>
+
+      <h2>1. Acceptance of Terms</h2>
+      <p>By creating an account or using Nestfy, you agree to these Terms of Service. If you do not agree, please do not use the app.</p>
+
+      <h2>2. Who Can Use Nestfy</h2>
+      <ul>
+        <li>You must be at least 13 years old to use Nestfy</li>
+        <li>You must provide accurate information when creating an account</li>
+        <li>You are responsible for maintaining the security of your account and password</li>
+        <li>You must notify us immediately of any unauthorized use of your account</li>
+      </ul>
+
+      <h2>3. What Nestfy Is</h2>
+      <p>Nestfy is a <strong>personal finance tracking tool</strong>. It helps you log, organize, and visualize your income and expenses. It is:</p>
+      <ul>
+        <li>Not a bank or financial institution</li>
+        <li class="no">Not financial advice — always consult a qualified advisor for financial decisions</li>
+        <li class="no">Not responsible for any financial decisions you make based on data in the app</li>
+      </ul>
+
+      <h2>4. Your Data</h2>
+      <p>All financial data you enter into Nestfy belongs to <strong>you</strong>. We do not claim ownership of your data. You can export or delete your data at any time from the Settings page.</p>
+
+      <h2>5. Acceptable Use</h2>
+      <p>You agree not to:</p>
+      <ul>
+        <li class="no">Use Nestfy for any illegal or unauthorized purpose</li>
+        <li class="no">Attempt to hack, disrupt, or reverse-engineer the service</li>
+        <li class="no">Create multiple accounts to abuse the free service</li>
+        <li class="no">Upload malicious content or attempt to inject code</li>
+      </ul>
+
+      <h2>6. Service Availability</h2>
+      <p>We aim to keep Nestfy running smoothly, but we cannot guarantee 100% uptime. We reserve the right to modify, suspend, or discontinue the service at any time with reasonable notice.</p>
+
+      <h2>7. Disclaimer of Warranties</h2>
+      <p>Nestfy is provided <strong>"as is"</strong> without warranties of any kind. We are not liable for any loss of data, financial loss, or damages arising from your use of the app.</p>
+
+      <h2>8. Changes to Terms</h2>
+      <p>We may update these terms from time to time. Continued use of Nestfy after changes means you accept the new terms. We will update the date above when changes are made.</p>
+
+      <h2>9. Contact</h2>
+      <div class="contact-box">
+        Questions about these terms? Email us at
+        <a href="mailto:nejamulhaque.05@gmail.com">nejamulhaque.05@gmail.com</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       PRIVACY POLICY
+       ══════════════════════════════════════ -->
+  <div class="panel" id="panel-privacy">
+    <div class="card">
+      <div class="doc-title">Privacy Policy</div>
+      <div class="doc-date">Last updated: March 2026</div>
+
+      <div class="highlight">
+        <strong>Summary:</strong> We collect only what's necessary to run the app. We never sell your data. You can delete everything at any time.
+      </div>
+
+      <h2>1. What We Collect</h2>
+      <p>When you use Nestfy, we collect only the following:</p>
+      <ul>
+        <li><strong>Email address</strong> — for account authentication</li>
+        <li><strong>Display name</strong> — shown in the app sidebar</li>
+        <li><strong>Profile photo URL</strong> — from Google sign-in (optional)</li>
+        <li><strong>Financial data you enter</strong> — transactions, budgets, goals, preferences</li>
+      </ul>
+
+      <h2>2. What We Do NOT Collect</h2>
+      <ul>
+        <li class="no">Location data</li>
+        <li class="no">Device identifiers or advertising IDs</li>
+        <li class="no">Browsing history or behavior on other apps</li>
+        <li class="no">Bank account numbers or real payment information</li>
+        <li class="no">Any data from children under 13</li>
+      </ul>
+
+      <h2>3. How We Store Your Data</h2>
+      <p>All data is stored securely in <strong>Google Firebase</strong> — a cloud platform by Google with enterprise-grade security:</p>
+      <ul>
+        <li>Encrypted in transit (HTTPS) and at rest</li>
+        <li>Accessible only to you when signed in</li>
+        <li>Protected by Firebase security rules</li>
+        <li>Hosted on Google Cloud infrastructure</li>
+      </ul>
+
+      <h2>4. How We Use Your Data</h2>
+      <ul>
+        <li>To provide and improve the Nestfy service</li>
+        <li>To sync your data across devices when you sign in</li>
+        <li>To display your financial summaries and analytics</li>
+      </ul>
+
+      <h2>5. What We Never Do</h2>
+      <ul>
+        <li class="no">Sell your data to anyone</li>
+        <li class="no">Share your data with advertisers</li>
+        <li class="no">Use your financial data for profiling</li>
+        <li class="no">Send marketing emails without consent</li>
+      </ul>
+
+      <h2>6. Third-Party Services</h2>
+      <p>Nestfy uses these Google services — each has its own privacy policy:</p>
+      <ul>
+        <li><a href="https://firebase.google.com" target="_blank">Firebase Authentication</a> — secure login</li>
+        <li><a href="https://firebase.google.com/products/firestore" target="_blank">Cloud Firestore</a> — data storage</li>
+        <li><a href="https://firebase.google.com/products/hosting" target="_blank">Firebase Hosting</a> — app delivery</li>
+      </ul>
+      <p>Google's privacy policy: <a href="https://policies.google.com/privacy" target="_blank">policies.google.com/privacy</a></p>
+
+      <h2>7. Your Rights &amp; Controls</h2>
+      <ul>
+        <li><strong>Access</strong> — all your data is visible in the app</li>
+        <li><strong>Export</strong> — download as CSV or JSON from Settings</li>
+        <li><strong>Delete</strong> — delete all data from Settings → Danger Zone</li>
+        <li><strong>Account deletion</strong> — email us and we delete everything within 7 days</li>
+      </ul>
+
+      <h2>8. Cookies</h2>
+      <p>Nestfy uses browser local storage and Firebase session tokens to keep you signed in. We do not use third-party advertising cookies.</p>
+
+      <h2>9. Changes to This Policy</h2>
+      <p>We may update this policy occasionally. We will update the date at the top of this page. Continued use of Nestfy means you accept the updated policy.</p>
+
+      <h2>10. Contact Us</h2>
+      <div class="contact-box">
+        Privacy questions or data deletion requests:<br>
+        <a href="mailto:nejamulhaque.05@gmail.com">nejamulhaque.05@gmail.com</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function switchTab(tab) {
+    // Update tab buttons
+    document.getElementById('tab-terms').classList.toggle('active', tab === 'terms');
+    document.getElementById('tab-privacy').classList.toggle('active', tab === 'privacy');
+    // Update panels
+    document.getElementById('panel-terms').classList.toggle('active', tab === 'terms');
+    document.getElementById('panel-privacy').classList.toggle('active', tab === 'privacy');
+    // Scroll to top smoothly
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>

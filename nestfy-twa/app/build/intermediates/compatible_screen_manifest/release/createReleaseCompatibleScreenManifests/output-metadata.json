@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "artifactType": {
+    "type": "COMPATIBLE_SCREEN_MANIFEST",
+    "kind": "Directory"
+  },
+  "applicationId": "app.web.expence_tracker_3e97b.twa",
+  "variantName": "release",
+  "elements": []
+}

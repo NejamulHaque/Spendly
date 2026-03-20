@@ -1,0 +1,4 @@
+#Sat Mar 14 11:25:25 IST 2026
+base.0=/Users/nejamulhaque05/Downloads/Spendly-Expence-Tracker/spendly-twa/app/build/intermediates/dex/release/minifyReleaseWithR8/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

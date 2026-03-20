@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "app.web.expence_tracker_3e97b.twa",
+    "sha256_cert_fingerprints": [
+      "33:30:65:E9:AC:14:C5:3F:76:E8:9F:69:BF:6D:3E:80:2B:D5:06:FC:9C:08:C7:68:2F:6B:73:7F:35:FF:7E:8A"
+    ]
+  }
+}]

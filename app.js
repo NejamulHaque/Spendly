@@ -1,5 +1,5 @@
 // ============================================================
-//  SPENDLY — app.js
+//  NESTFY — app.js
 //  Main application: Auth UI, Firestore data, all UI logic
 // ============================================================
 
@@ -99,9 +99,11 @@ window.handleForgotPw = async function() {
 };
 
 window.handleLogout = async function() {
-  openConfirm('Sign Out', 'Are you sure you want to sign out?', async () => {
-    if (unsubscribeTx) { unsubscribeTx(); unsubscribeTx = null; }
-    await logOut();
+  openConfirm('Sign Out', 'Are you sure you want to sign out?', async (yes) => {
+    if (yes) {
+      if (unsubscribeTx) { unsubscribeTx(); unsubscribeTx = null; }
+      await logOut();
+    }
   });
 };
 

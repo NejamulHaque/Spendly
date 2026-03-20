@@ -1,17 +1,17 @@
-// ============================================================
-//  SPENDLY — firebase-config.js
-//  ⚠️  PASTE YOUR FIREBASE CREDENTIALS BELOW — only edit this file
-//  All other files import from here automatically.
-//  See SETUP-GUIDE.md for step-by-step instructions.
-// ============================================================
+// Import Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-import { initializeApp }               from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore }                from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { 
+  getAuth, 
+  GoogleAuthProvider 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// ── STEP 1: Replace every value below with your own ──────────
-// Get it: Firebase Console → Project Settings → Your Apps → SDK setup → Config
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+import {
+  getFirestore,
+  enableIndexedDbPersistence
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBzB1OjG3qBd1J4Jv7-fBpqYFsAc4gVNTc",
   authDomain: "expence-tracker-3e97b.firebaseapp.com",
@@ -19,13 +19,29 @@ const firebaseConfig = {
   storageBucket: "expence-tracker-3e97b.firebasestorage.app",
   messagingSenderId: "566389036358",
   appId: "1:566389036358:web:0e5b3c52fc7c0054308147",
-  // measurementId: "G-LGC8Y1PRTQ"
+  measurementId: "G-LGC8Y1PRTQ"
 };
 
-// ── DO NOT EDIT BELOW ─────────────────────────────────────────
-const app      = initializeApp(firebaseConfig);
-const auth     = getAuth(app);
-const db       = getFirestore(app);
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+// Initialize Auth
+const auth = getAuth(app);
+
+// Google provider
 const provider = new GoogleAuthProvider();
 
-export { auth, db, provider, firebaseConfig };
+// Initialize Firestore
+const db = getFirestore(app);
+
+// Enable offline persistence
+enableIndexedDbPersistence(db).catch((err) => {
+  if (err.code == 'failed-precondition') {
+    console.warn('Multiple tabs open, persistence can only be enabled in one tab at a time.');
+  } else if (err.code == 'unimplemented') {
+    console.warn('The current browser does not support all of the features required to enable persistence.');
+  }
+});
+
+// Export so other files can use them
+export { auth, provider, db };

@@ -2,276 +2,402 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Spendly — Smart Expense Tracker</title>
-
-  <!-- Chart.js -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>Nestfy — Smart Finance Tracker</title>
+  <link rel="manifest" href="/manifest.json"/>
+  <meta name="theme-color" content="#00d4aa"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Nestfy"/>
+  <meta name="application-name" content="Nestfy"/>
+  <meta name="msapplication-TileColor" content="#0a0a0f"/>
+  <meta name="msapplication-TileImage" content="/icons/icon-144.png"/>
+  <meta name="description" content="Track expenses, income, budgets and savings goals — all in one place."/>
+  <link rel="apple-touch-icon" href="/icons/icon-192.png"/>
+  <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152.png"/>
+  <link rel="apple-touch-icon" sizes="144x144" href="/icons/icon-144.png"/>
+  <link rel="icon" type="image/png" sizes="96x96" href="/icons/icon-96.png"/>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
-  <!-- Spendly Styles -->
   <link rel="stylesheet" href="style.css"/>
   <link rel="stylesheet" href="auth.css"/>
+
+  <!-- Auth screen enhanced styles (merged from login.html) -->
+  <style>
+    /* ── Animated orbs behind auth card ── */
+    .auth-orb { position:fixed; border-radius:50%; filter:blur(80px); pointer-events:none; animation:orbFloat 8s ease-in-out infinite; z-index:9998; }
+    .auth-orb-1 { width:300px;height:300px;background:rgba(0,212,170,.06);top:-100px;left:-100px;animation-delay:0s; }
+    .auth-orb-2 { width:400px;height:400px;background:rgba(124,106,255,.05);bottom:-150px;right:-100px;animation-delay:-4s; }
+    @keyframes orbFloat { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(20px,-30px) scale(1.05)} }
+
+    /* ── Auth card upgrade ── */
+    .auth-card {
+      padding: 44px 44px 40px !important;
+      border-radius: 28px !important;
+      box-shadow: 0 32px 80px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.03) !important;
+    }
+
+    /* ── Logo icon ── */
+    .auth-logo-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 64px; height: 64px;
+      background: #0d1117;
+      border: 1px solid rgba(0,212,170,.2);
+      border-radius: 18px; margin-bottom: 14px;
+      box-shadow: 0 8px 32px rgba(0,212,170,.18), 0 0 0 1px rgba(124,106,255,.1);
+    }
+    .auth-logo-icon svg { width: 44px; height: 44px; }
+    .auth-logo-text {
+      font-size: 2.2rem !important;
+      font-weight: 900 !important;
+      letter-spacing: -1.5px !important;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Password toggle SVG style ── */
+    .pw-toggle svg { width:16px; height:16px; }
+    .pw-toggle { display:flex; align-items:center; }
+
+    /* ── Remember me row ── */
+    .remember-row { display:flex; align-items:center; gap:9px; margin-bottom:16px; cursor:pointer; }
+    .remember-row input { width:15px; height:15px; accent-color:var(--accent); cursor:pointer; flex-shrink:0; }
+    .remember-row span  { font-size:.8rem; color:var(--muted2); user-select:none; }
+
+    /* ── Forgot panel ── */
+    #forgot-panel { display:none; }
+    #forgot-panel.show { display:block; animation:panelIn .22s ease both; }
+    .back-btn {
+      background:none; border:none; color:var(--muted); cursor:pointer;
+      font-family:var(--ff); font-size:.8rem; display:flex; align-items:center;
+      gap:5px; margin-bottom:20px; padding:0; transition:color .18s;
+    }
+    .back-btn:hover { color:var(--text); }
+    .back-btn svg { width:14px; height:14px; }
+    .forgot-title { font-size:1.1rem; font-weight:800; margin-bottom:6px; }
+    .forgot-sub   { font-size:.82rem; color:var(--muted); line-height:1.5; margin-bottom:20px; }
+
+    /* ── Unified error/success message (replaces per-panel msgs) ── */
+    #auth-error, #auth-success {
+      padding:11px 14px; border-radius:12px; font-size:.82rem; font-weight:500;
+      margin-bottom:16px; display:none; align-items:center; gap:9px; line-height:1.4;
+    }
+    #auth-error.show   { display:flex; animation:msgIn .2s ease; }
+    #auth-success.show { display:flex; animation:msgIn .2s ease; }
+    #auth-error   { background:rgba(255,107,107,.08); border:1px solid rgba(255,107,107,.2); color:#fca5a5; }
+    #auth-success { background:rgba(0,212,170,.08);   border:1px solid rgba(0,212,170,.25);  color:#6ee7b7; }
+    #auth-error svg, #auth-success svg { width:16px; height:16px; flex-shrink:0; }
+    @keyframes msgIn { from{opacity:0;transform:translateY(-4px)} to{opacity:1;transform:translateY(0)} }
+
+    /* ── Strength meter upgrade ── */
+    .pw-strength { margin-top:7px; display:none; }
+    .pw-strength.show { display:block; }
+    .pw-strength .pw-strength-bar  { height:3px; background:var(--bg); border-radius:99px; overflow:hidden; margin-bottom:5px; }
+    .pw-strength .pw-strength-fill { height:100%; border-radius:99px; transition:width .3s, background .3s; width:0; }
+    .pw-strength .pw-strength-label { font-size:.68rem; color:var(--muted); }
+
+    @media(max-width:500px) { .auth-card { padding:30px 20px 28px !important; border-radius:22px !important; } }
+
+    /* ── PWA Install Banner ── */
+    #pwa-install-banner {
+      position: fixed; bottom: -120px; left: 50%; transform: translateX(-50%);
+      width: calc(100% - 32px); max-width: 480px;
+      background: #1a1a26; border: 1px solid rgba(0,212,170,.25);
+      border-radius: 18px; padding: 14px 16px;
+      display: flex; align-items: center; gap: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.6);
+      z-index: 99999; transition: bottom .4s cubic-bezier(.16,1,.3,1);
+    }
+    #pwa-install-banner.show { bottom: 24px; }
+    .pwa-install-icon {
+      width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
+      background: linear-gradient(135deg, #00d4aa, #7c6aff);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; color: #000;
+    }
+    .pwa-install-text { flex: 1; min-width: 0; }
+    .pwa-install-text strong { display: block; font-size: .85rem; font-weight: 700; color: #f0f0f8; }
+    .pwa-install-text span   { font-size: .72rem; color: #666680; }
+    #pwa-install-btn {
+      padding: 8px 16px; background: linear-gradient(135deg, #00d4aa, #00b894);
+      color: #000; font-weight: 800; font-size: .82rem; border: none;
+      border-radius: 10px; cursor: pointer; flex-shrink: 0; font-family: var(--ff);
+    }
+    #pwa-install-dismiss {
+      background: none; border: none; color: #666680; cursor: pointer;
+      padding: 4px; font-size: .9rem; flex-shrink: 0;
+    }
+
+    /* ── Mobile safe area (notch/home bar) — PWA only ── */
+    @supports (padding-bottom: env(safe-area-inset-bottom)) {
+      @media (display-mode: standalone) {
+        body    { padding-bottom: env(safe-area-inset-bottom); }
+        .sidebar { padding-bottom: env(safe-area-inset-bottom); }
+        .topbar  { padding-top: env(safe-area-inset-top, 0px); }
+      }
+    }
+
+    /* ── Standalone PWA mode tweaks ── */
+    @media (display-mode: standalone) {
+      #pwa-install-banner { display: none !important; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- ============================================================
-     AUTH SCREEN (Login / Sign Up) — shown until user logs in
-     ============================================================ -->
+<!-- Auth Screen -->
 <div id="auth-screen">
+  <div class="auth-orb auth-orb-1"></div>
+  <div class="auth-orb auth-orb-2"></div>
   <div class="auth-card">
-
-    <!-- Logo -->
     <div class="auth-logo">
-      <span class="auth-logo-text">Spendly</span>
+      <div class="auth-logo-icon">
+        <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="aG1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00d4aa"/>
+      <stop offset="100%" stop-color="#7c6aff"/>
+    </linearGradient>
+  </defs>
+  <!-- Hex -->
+  <polygon points="26,5 44,15 44,37 26,47 8,37 8,15"
+    fill="none" stroke="url(#aG1)" stroke-width="2"/>
+  <!-- Inner hex subtle -->
+  <polygon points="26,10 39,18 39,34 26,42 13,34 13,18"
+    fill="none" stroke="#00d4aa" stroke-width="0.5" opacity="0.25"/>
+  <!-- N letterform -->
+  <path d="M15 40 L15 12 L37 40 L37 12"
+    fill="none" stroke="url(#aG1)" stroke-width="4"
+    stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Orbit ring -->
+  <circle cx="26" cy="26" r="20" fill="none"
+    stroke="#00d4aa" stroke-width="0.8"
+    stroke-dasharray="3 5" opacity="0.45"/>
+  <!-- Orbit dot -->
+  <circle cx="46" cy="26" r="3" fill="#00d4aa"/>
+</svg>
+      </div>
+      <span class="auth-logo-text">Nestfy</span>
       <span class="auth-logo-sub">Smart Finance Tracker</span>
     </div>
-
-    <!-- Tabs: Login / Sign Up -->
-    <div class="auth-tabs">
+    <div class="auth-tabs" id="auth-tab-bar">
       <button class="auth-tab active" id="tab-login" onclick="authTab('login')">Sign In</button>
-      <button class="auth-tab"        id="tab-signup" onclick="authTab('signup')">Create Account</button>
+      <button class="auth-tab" id="tab-signup" onclick="authTab('signup')">Create Account</button>
     </div>
-
-    <!-- ── LOGIN PANEL ── -->
+    <div id="auth-error"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><span id="auth-error-text"></span></div>
+    <div id="auth-success"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg><span id="auth-success-text"></span></div>
+    <!-- Login Panel -->
     <div class="auth-panel active" id="panel-login">
-      <div class="auth-msg" id="login-msg"></div>
-
-      <!-- Google -->
       <button class="btn-google" onclick="handleGoogleAuth()">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
-          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-        </svg>
+        <svg viewBox="0 0 24 24" width="18" height="18"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
         Continue with Google
       </button>
-
       <div class="auth-divider">or sign in with email</div>
-
       <div class="form-group">
-        <div class="form-label">Email</div>
-        <input type="email" class="form-control" id="login-email" placeholder="you@example.com" autocomplete="email">
+        <div class="form-label">Email Address</div>
+        <input type="email" class="form-control" id="login-email" placeholder="you@example.com" autocomplete="email" onkeydown="if(event.key==='Enter')handleEmailLogin()">
       </div>
-
       <div class="form-group">
-        <div class="form-label">
-          Password
-          <button class="forgot-link" onclick="handleForgotPassword()">Forgot password?</button>
-        </div>
+        <div class="form-label">Password <button class="forgot-link" onclick="handleForgotPassword()" type="button">Forgot password?</button></div>
         <div class="pw-wrapper">
-          <input type="password" class="form-control" id="login-password" placeholder="••••••••" autocomplete="current-password"
-                 onkeydown="if(event.key==='Enter')handleEmailLogin()">
-          <button class="pw-toggle" onclick="togglePw('login-password',this)" tabindex="-1">
-            <i class="fas fa-eye"></i>
-          </button>
+          <input type="password" class="form-control" id="login-password" placeholder="Your password" autocomplete="current-password" onkeydown="if(event.key==='Enter')handleEmailLogin()">
+          <button class="pw-toggle" onclick="togglePw('login-password',this)" type="button" tabindex="-1"><i class="fas fa-eye"></i></button>
         </div>
       </div>
-
-      <button class="btn-auth" id="btn-login" onclick="handleEmailLogin()">
-        <span class="btn-label">Sign In</span>
-        <div class="spinner"></div>
-      </button>
-    </div><!-- /panel-login -->
-
-    <!-- ── SIGN UP PANEL ── -->
+      <label class="remember-row"><input type="checkbox" id="remember-me" checked><span>Keep me signed in</span></label>
+      <button class="btn-auth" id="btn-login" onclick="handleEmailLogin()"><span class="btn-label">Sign In</span><div class="spinner"></div></button>
+    </div>
+    <!-- Signup Panel -->
     <div class="auth-panel" id="panel-signup">
-      <div class="auth-msg" id="signup-msg"></div>
-
-      <!-- Google -->
       <button class="btn-google" onclick="handleGoogleAuth()">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
-          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-        </svg>
+        <svg viewBox="0 0 24 24" width="18" height="18"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
         Sign up with Google
       </button>
-
       <div class="auth-divider">or create with email</div>
-
-      <div class="form-group">
-        <div class="form-label">Full Name</div>
-        <input type="text" class="form-control" id="signup-name" placeholder="Your Name" autocomplete="name">
-      </div>
-
-      <div class="form-group">
-        <div class="form-label">Email</div>
-        <input type="email" class="form-control" id="signup-email" placeholder="you@example.com" autocomplete="email">
-      </div>
-
+      <div class="form-group"><div class="form-label">Full Name</div><input type="text" class="form-control" id="signup-name" placeholder="Your full name" autocomplete="name"></div>
+      <div class="form-group"><div class="form-label">Email Address</div><input type="email" class="form-control" id="signup-email" placeholder="you@example.com" autocomplete="email"></div>
       <div class="form-group">
         <div class="form-label">Password</div>
         <div class="pw-wrapper">
-          <input type="password" class="form-control" id="signup-password" placeholder="Min. 6 characters"
-            autocomplete="new-password" oninput="checkStrength(this.value)"
-            onkeydown="if(event.key==='Enter')handleEmailSignup()">
-          <button class="pw-toggle" onclick="togglePw('signup-password',this)" tabindex="-1">
-            <i class="fas fa-eye"></i>
-          </button>
+          <input type="password" class="form-control" id="signup-password" placeholder="Min. 6 characters" autocomplete="new-password" oninput="checkStrength(this.value)" onkeydown="if(event.key==='Enter')handleEmailSignup()">
+          <button class="pw-toggle" onclick="togglePw('signup-password',this)" type="button" tabindex="-1"><i class="fas fa-eye"></i></button>
         </div>
-        <div class="pw-strength" id="pw-strength">
-          <div class="pw-strength-bar"><div class="pw-strength-fill" id="pw-fill"></div></div>
-          <div class="pw-strength-label" id="pw-label">Too short</div>
+        <div class="pw-strength" id="pw-strength"><div class="pw-strength-bar"><div class="pw-strength-fill" id="pw-fill"></div></div><div class="pw-strength-label" id="pw-label"></div></div>
+      </div>
+      <div class="form-group">
+        <div class="form-label">Confirm Password</div>
+        <div class="pw-wrapper">
+          <input type="password" class="form-control" id="signup-confirm" placeholder="Repeat password" autocomplete="new-password" onkeydown="if(event.key==='Enter')handleEmailSignup()">
+          <button class="pw-toggle" onclick="togglePw('signup-confirm',this)" type="button" tabindex="-1"><i class="fas fa-eye"></i></button>
         </div>
       </div>
-
-      <button class="btn-auth" id="btn-signup" onclick="handleEmailSignup()">
-        <span class="btn-label">Create Account</span>
-        <div class="spinner"></div>
-      </button>
-    </div><!-- /panel-signup -->
-
-    <div class="auth-footer">
-      By signing in you agree to our <a href="#">Terms</a> &amp; <a href="#">Privacy Policy</a>
+      <button class="btn-auth" id="btn-signup" onclick="handleEmailSignup()"><span class="btn-label">Create Account</span><div class="spinner"></div></button>
     </div>
+    <!-- Forgot Panel -->
+    <div id="forgot-panel">
+      <button class="back-btn" onclick="handleForgotBack()" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>Back to sign in</button>
+      <div class="forgot-title">Reset Password</div>
+      <div class="forgot-sub">Enter your email and we'll send you a reset link.</div>
+      <div class="form-group"><div class="form-label">Email Address</div><input type="email" class="form-control" id="reset-email" placeholder="you@example.com" onkeydown="if(event.key==='Enter')handleForgotPassword()"></div>
+      <button class="btn-auth" id="btn-reset" onclick="handleForgotPassword()"><span class="btn-label">Send Reset Link</span><div class="spinner"></div></button>
+    </div>
+    <div class="auth-footer">By signing in you agree to our <a href="legal.html" target="_blank">Terms</a> &amp; <a href="legal.html" target="_blank">Privacy Policy</a></div>
   </div>
-</div><!-- /auth-screen -->
+</div>
 
-<!-- ============================================================
-     MOBILE SIDEBAR TOGGLE
-     ============================================================ -->
-<button class="mobile-toggle" id="mobileToggle" onclick="toggleSidebar()">
-  <i class="fas fa-bars"></i>
-</button>
+<!-- Sidebar backdrop -->
+<div id="sidebar-backdrop" onclick="toggleSidebar()"></div>
 
-<!-- ============================================================
-     SIDEBAR NAVIGATION
-     ============================================================ -->
+<!-- Mobile toggle -->
+<button class="mobile-toggle" id="mobileToggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+
+<!-- Sidebar -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-logo">
-    <div class="logo-text">Spendly</div>
-    <div class="logo-sub">Smart Finance Tracker</div>
+    <div class="logo-icon-wrap" style="background:none;padding:0">
+      <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:36px;height:36px">
+  <defs>
+    <linearGradient id="sG1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00d4aa"/>
+      <stop offset="100%" stop-color="#7c6aff"/>
+    </linearGradient>
+  </defs>
+  <polygon points="18,3 31,10 31,26 18,33 5,26 5,10"
+    fill="none" stroke="url(#sG1)" stroke-width="1.8"/>
+  <path d="M10 29 L10 7 L26 29 L26 7"
+    fill="none" stroke="url(#sG1)" stroke-width="3.2"
+    stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="18" cy="18" r="13" fill="none"
+    stroke="#00d4aa" stroke-width="0.7"
+    stroke-dasharray="2.5 4" opacity="0.4"/>
+  <circle cx="31" cy="18" r="2.5" fill="#00d4aa"/>
+</svg>
+    </div>
+    <div>
+      <div class="logo-text">Nestfy</div>
+      <div class="logo-sub">Finance Tracker</div>
+    </div>
   </div>
 
-  <!-- User info — shown when logged in -->
   <div id="sidebar-user" style="display:none">
     <div class="user-info">
       <div class="user-avatar" id="user-avatar">?</div>
       <div class="user-details">
-        <div class="user-name"  id="user-name">—</div>
+        <div class="user-name" id="user-name">—</div>
         <div class="user-email" id="user-email">—</div>
       </div>
-      <button class="btn-logout" title="Sign out" onclick="handleLogout()">
-        <i class="fas fa-right-from-bracket"></i>
-      </button>
+      <button class="btn-logout" title="Sign out" onclick="handleLogout()"><i class="fas fa-right-from-bracket"></i></button>
     </div>
-    <div class="sync-row">
-      <div class="sync-dot" id="sync-dot"></div>
-      <span id="sync-label">Synced</span>
-    </div>
+    <div class="sync-row"><div class="sync-dot" id="sync-dot"></div><span id="sync-label">Synced</span></div>
   </div>
 
-  <div style="flex:1;overflow-y:auto;padding:8px 0">
+  <div class="sidebar-nav">
     <div class="nav-section-label">Main</div>
-    <div class="nav-item active" data-page="dashboard" onclick="nav(this,'dashboard')">
-      <i class="fas fa-home"></i> Dashboard
-    </div>
-    <div class="nav-item" data-page="transactions" onclick="nav(this,'transactions')">
-      <i class="fas fa-list-ul"></i> Transactions
-      <span class="nav-badge" id="tx-count-badge">0</span>
-    </div>
+    <div class="nav-item active" data-page="dashboard" onclick="nav(this,'dashboard')"><i class="fas fa-home"></i><span>Dashboard</span></div>
+    <div class="nav-item" data-page="transactions" onclick="nav(this,'transactions')"><i class="fas fa-list-ul"></i><span>Transactions</span><span class="nav-badge" id="tx-count-badge">0</span></div>
 
     <div class="nav-section-label">Planning</div>
-    <div class="nav-item" data-page="budgets" onclick="nav(this,'budgets')">
-      <i class="fas fa-wallet"></i> Budgets
-    </div>
-    <div class="nav-item" data-page="goals" onclick="nav(this,'goals')">
-      <i class="fas fa-bullseye"></i> Savings Goals
-    </div>
-    <div class="nav-item" data-page="recurring" onclick="nav(this,'recurring')">
-      <i class="fas fa-rotate"></i> Recurring
-    </div>
+    <div class="nav-item" data-page="budgets" onclick="nav(this,'budgets')"><i class="fas fa-wallet"></i><span>Budgets</span></div>
+    <div class="nav-item" data-page="goals" onclick="nav(this,'goals')"><i class="fas fa-bullseye"></i><span>Savings Goals</span></div>
+    <div class="nav-item" data-page="recurring" onclick="nav(this,'recurring')"><i class="fas fa-rotate"></i><span>Recurring</span></div>
 
     <div class="nav-section-label">Insights</div>
-
-    <!-- Analytics — requires login -->
-    <div class="nav-item nav-locked" data-page="analytics" id="nav-analytics" onclick="navProtected(this,'analytics')">
-      <i class="fas fa-chart-line"></i> Analytics
-      <span class="nav-lock-badge" id="analytics-lock"><i class="fas fa-lock"></i></span>
-    </div>
-
-    <!-- Settings — requires login -->
-    <div class="nav-item nav-locked" data-page="settings" id="nav-settings" onclick="navProtected(this,'settings')">
-      <i class="fas fa-gear"></i> Settings
-      <span class="nav-lock-badge" id="settings-lock"><i class="fas fa-lock"></i></span>
-    </div>
+    <div class="nav-item nav-locked" data-page="analytics" id="nav-analytics" onclick="navProtected(this,'analytics')"><i class="fas fa-chart-line"></i><span>Analytics</span><span class="nav-lock-badge" id="analytics-lock"><i class="fas fa-lock"></i></span></div>
+    <div class="nav-item nav-locked" data-page="settings" id="nav-settings" onclick="navProtected(this,'settings')"><i class="fas fa-gear"></i><span>Settings</span><span class="nav-lock-badge" id="settings-lock"><i class="fas fa-lock"></i></span></div>
   </div>
 
   <div class="sidebar-footer">
+    <!-- Developer / About Button -->
+    <button class="dev-btn" onclick="openDevModal()">
+      <div class="dev-btn-avatar">NH</div>
+      <div class="dev-btn-info">
+        <span class="dev-btn-name">Built by Nejamul</span>
+        <span class="dev-btn-sub">View profile & contribute</span>
+      </div>
+      <i class="fas fa-chevron-right dev-btn-arrow"></i>
+    </button>
+
+    <div class="theme-toggle" onclick="toggleTheme()" id="theme-toggle-btn">
+      <div class="theme-toggle-label"><i class="fas fa-moon" id="theme-icon"></i><span id="theme-label">Dark Mode</span></div>
+      <div class="toggle-pill" id="toggle-pill"></div>
+    </div>
     <div class="sidebar-currency">
       <i class="fas fa-coins" style="color:var(--gold);font-size:.85rem"></i>
       <select id="global-currency" onchange="setCurrency(this.value)">
-        <option value="INR">₹ INR – Indian Rupee</option>
-        <option value="USD">$ USD – US Dollar</option>
-        <option value="EUR">€ EUR – Euro</option>
-        <option value="GBP">£ GBP – Pound</option>
-        <option value="JPY">¥ JPY – Yen</option>
-        <option value="CAD">CA$ CAD – Canadian</option>
-        <option value="AUD">A$ AUD – Australian</option>
-        <option value="SGD">S$ SGD – Singapore</option>
-        <option value="BDT">৳ BDT – Bangladeshi</option>
+        <option value="INR">₹ INR</option><option value="USD">$ USD</option>
+        <option value="EUR">€ EUR</option><option value="GBP">£ GBP</option>
+        <option value="JPY">¥ JPY</option><option value="CAD">CA$ CAD</option>
+        <option value="AUD">A$ AUD</option><option value="SGD">S$ SGD</option>
+        <option value="BDT">৳ BDT</option>
       </select>
     </div>
-    <div style="font-size:.68rem;color:var(--muted);margin-top:10px;text-align:center" id="storage-label">
-      Data stored locally on your device
-    </div>
+    <div class="sidebar-version">Nestfy v2.0 · Firebase</div>
   </div>
 </aside>
 
-<!-- ============================================================
-     MAIN CONTENT AREA
-     ============================================================ -->
+<!-- Main -->
 <main class="main">
-
-  <!-- Top Bar -->
+  <!-- Topbar -->
   <div class="topbar">
     <div class="page-title" id="page-title">Dashboard</div>
     <div class="topbar-right">
-      <button class="btn-add" onclick="openModal()">
-        <i class="fas fa-plus"></i> Add Transaction
+      <button class="topbar-search" onclick="openCmd()" title="Search (Ctrl+K)">
+        <i class="fas fa-search"></i><span>Search...</span><span class="shortcut-hint"><kbd>⌘</kbd><kbd>K</kbd></span>
       </button>
+      <button class="notif-btn" onclick="toggleNotifPanel()" title="Notifications" id="notif-btn">
+        <i class="fas fa-bell"></i><span class="notif-dot" id="notif-dot"></span>
+      </button>
+      <button class="btn-add" onclick="openModal()"><i class="fas fa-plus"></i><span class="add-btn-text">Add Transaction</span></button>
     </div>
   </div>
 
   <div class="content">
 
-    <!-- ==================================================
-         PAGE: DASHBOARD
-         ================================================== -->
+    <!-- ══════════════════ DASHBOARD ══════════════════ -->
     <div class="page active" id="page-dashboard">
+      <!-- Greeting + Month Nav -->
+      <div class="greeting-row">
+        <div>
+          <h1 id="greeting" class="greeting-title"></h1>
+          <p id="greeting-sub" class="greeting-sub"></p>
+        </div>
+        <div class="month-nav">
+          <button class="month-nav-btn" onclick="navMonth(-1)"><i class="fas fa-chevron-left"></i></button>
+          <div class="month-nav-center"><span id="month-nav-label"></span><button id="month-nav-reset" onclick="resetMonthNav()" style="display:none">Today</button></div>
+          <button class="month-nav-btn" onclick="navMonth(1)"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
 
-      <!-- Greeting -->
-      <div style="margin-bottom:22px">
-        <h1 id="greeting" style="font-size:1.5rem;font-weight:900;letter-spacing:-.5px"></h1>
-        <p id="greeting-sub" style="color:var(--muted);font-size:.82rem;margin-top:3px"></p>
+      <!-- Quick action pills -->
+      <div class="quick-pills">
+        <button class="pill pill-accent" onclick="openModal()"><i class="fas fa-plus"></i> Add Expense</button>
+        <button class="pill pill-green" onclick="openModalIncome()"><i class="fas fa-arrow-down"></i> Add Income</button>
+        <button class="pill" onclick="nav(document.querySelector('[data-page=budgets]'),'budgets')"><i class="fas fa-wallet"></i> Budgets</button>
+        <button class="pill" onclick="nav(document.querySelector('[data-page=goals]'),'goals')"><i class="fas fa-bullseye"></i> Goals</button>
       </div>
 
       <!-- Stat Cards -->
       <div class="stats-grid">
-        <div class="stat-card sc-green">
+        <div class="stat-card sc-green" onclick="nav(document.querySelector('[data-page=transactions]'),'transactions')">
           <div class="stat-label"><i class="fas fa-arrow-trend-down"></i> Income This Month</div>
-          <div class="stat-val" id="s-income">₹0</div>
+          <div class="stat-val" id="s-income">₹0.00</div>
           <div class="stat-sub" id="s-income-sub">0 transactions</div>
           <i class="fas fa-piggy-bank stat-icon"></i>
         </div>
-        <div class="stat-card sc-red">
+        <div class="stat-card sc-red" onclick="nav(document.querySelector('[data-page=transactions]'),'transactions')">
           <div class="stat-label"><i class="fas fa-arrow-trend-up"></i> Spent This Month</div>
-          <div class="stat-val" id="s-spent">₹0</div>
+          <div class="stat-val" id="s-spent">₹0.00</div>
           <div class="stat-sub" id="s-spent-sub">0 transactions</div>
           <i class="fas fa-receipt stat-icon"></i>
         </div>
         <div class="stat-card sc-blue">
           <div class="stat-label"><i class="fas fa-scale-balanced"></i> Net Balance</div>
-          <div class="stat-val" id="s-balance">₹0</div>
+          <div class="stat-val" id="s-balance">₹0.00</div>
           <div class="stat-sub">All time income − expenses</div>
           <i class="fas fa-vault stat-icon"></i>
         </div>
@@ -283,13 +409,34 @@
         </div>
       </div>
 
-      <!-- Insights -->
+      <!-- AI Insights -->
+      <div id="ai-insights-card" style="display:none;margin-bottom:20px">
+        <div class="card ai-card">
+          <div class="card-head">
+            <div class="card-title-lg"><i class="fas fa-sparkles" style="color:var(--accent2);margin-right:6px"></i>Smart Insights</div>
+            <button onclick="loadAIInsights()" class="btn btn-ghost btn-sm"><i class="fas fa-rotate-right"></i> Refresh</button>
+          </div>
+          <div id="ai-insights-list"></div>
+        </div>
+      </div>
+
+      <!-- Streak + Quick Stats -->
+      <div id="streak-banner-wrap" style="margin-bottom:12px"></div>
+      <div id="quick-stats-wrap"></div>
+
+      <!-- Wallets -->
+      <div class="section-label-row"><span>Wallets</span><button class="btn btn-ghost btn-sm" onclick="addWalletPrompt()"><i class="fas fa-plus"></i> Add</button></div>
+      <div id="wallet-bar" class="wallet-bar" style="margin-bottom:20px"></div>
+
+      <!-- Health Score + Bill Reminders -->
+      <div id="health-score-wrap"></div>
+      <div id="bill-reminders-wrap"></div>
+
+      <!-- Insights row -->
       <div class="g2" style="margin-bottom:20px" id="insights-row"></div>
 
-      <!-- Charts + Recent Transactions -->
-      <div class="g-left">
-
-        <!-- Pie chart -->
+      <!-- Charts -->
+      <div class="dashboard-charts">
         <div class="card" style="align-self:start">
           <div class="card-head">
             <div class="card-title">Spending Breakdown</div>
@@ -300,143 +447,100 @@
               <option value="all">All Time</option>
             </select>
           </div>
-          <div class="chart-wrap" style="height:220px"><canvas id="chart-pie"></canvas></div>
+          <div class="chart-wrap" style="height:200px"><canvas id="chart-pie"></canvas></div>
           <div id="pie-legend" style="margin-top:14px"></div>
         </div>
-
-        <!-- Right column -->
-        <div style="display:flex;flex-direction:column;gap:20px">
-
-          <!-- Bar Chart -->
+        <div style="display:flex;flex-direction:column;gap:16px">
           <div class="card">
-            <div class="card-head">
-              <div class="card-title">Income vs Expenses</div>
-              <span style="font-size:.72rem;color:var(--muted)">Last 6 months</span>
-            </div>
-            <div class="chart-wrap" style="height:180px"><canvas id="chart-bar"></canvas></div>
+            <div class="card-head"><div class="card-title">Income vs Expenses</div><span style="font-size:.72rem;color:var(--muted)">Last 6 months</span></div>
+            <div class="chart-wrap" style="height:170px"><canvas id="chart-bar"></canvas></div>
           </div>
-
-          <!-- Recent Transactions -->
           <div class="card">
             <div class="card-head">
               <div class="card-title-lg">Recent Transactions</div>
-              <button class="btn btn-ghost btn-sm" onclick="nav(document.querySelector('[data-page=transactions]'),'transactions')">
-                View All <i class="fas fa-arrow-right"></i>
-              </button>
+              <button class="btn btn-ghost btn-sm" onclick="nav(document.querySelector('[data-page=transactions]'),'transactions')">View All <i class="fas fa-arrow-right"></i></button>
             </div>
             <div id="recent-list"></div>
           </div>
-
         </div>
       </div>
     </div><!-- /page-dashboard -->
 
-    <!-- ==================================================
-         PAGE: TRANSACTIONS
-         ================================================== -->
+    <!-- ══════════════════ TRANSACTIONS ══════════════════ -->
     <div class="page" id="page-transactions">
-
-      <div class="transactions-header">
-        <div>
-          <h2 style="font-size:1.3rem;font-weight:800;letter-spacing:-.3px">Transactions</h2>
-          <p style="font-size:.78rem;color:var(--muted);margin-top:2px">Every penny tracked, in and out</p>
-        </div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button class="btn btn-success btn-sm" onclick="exportCSV()"><i class="fas fa-download"></i> Export CSV</button>
-          <button class="btn btn-danger btn-sm" onclick="confirmClearAll()"><i class="fas fa-trash"></i> Clear All</button>
+      <div class="page-header">
+        <div><h2 class="page-title-lg">Transactions</h2><p class="page-subtitle">Every penny tracked, in and out</p></div>
+        <div class="page-actions">
+          <button class="btn btn-ghost btn-sm" onclick="exportCSV()"><i class="fas fa-download"></i><span> CSV</span></button>
+          <button class="btn btn-ghost btn-sm" onclick="exportJSON()"><i class="fas fa-file-export"></i><span> Backup</span></button>
+          <button class="btn btn-danger btn-sm" onclick="confirmClearAll()"><i class="fas fa-trash"></i></button>
         </div>
       </div>
 
+      <!-- Category quick-filter pills -->
+      <div class="cat-pills" id="cat-pills"></div>
+
       <!-- Filters -->
       <div class="filter-bar">
-        <div class="form-group flex-grow">
-          <div class="form-label">Search</div>
-          <div class="input-group">
-            <span class="input-prefix"><i class="fas fa-search"></i></span>
-            <input type="search" class="form-control" id="f-search" placeholder="Description, category, tags..." oninput="renderTransactions()">
-          </div>
+        <div class="filter-search">
+          <i class="fas fa-search"></i>
+          <input type="search" class="form-control" id="f-search" placeholder="Search description, category, tags..." oninput="renderTransactions()">
         </div>
-        <div class="form-group">
-          <div class="form-label">Type</div>
+        <div class="filter-controls">
           <select class="form-control" id="f-type" onchange="renderTransactions()">
             <option value="">All Types</option>
             <option value="income">Income</option>
             <option value="expense">Expense</option>
           </select>
-        </div>
-        <div class="form-group">
-          <div class="form-label">Category</div>
-          <select class="form-control" id="f-cat" onchange="renderTransactions()">
-            <option value="">All Categories</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <div class="form-label">From</div>
-          <input type="date" class="form-control" id="f-from" onchange="renderTransactions()">
-        </div>
-        <div class="form-group">
-          <div class="form-label">To</div>
-          <input type="date" class="form-control" id="f-to" onchange="renderTransactions()">
-        </div>
-        <div class="form-group">
-          <div class="form-label">Sort By</div>
+          <select class="form-control" id="f-cat" onchange="renderTransactions()"><option value="">All Categories</option></select>
+          <input type="date" class="form-control" id="f-from" onchange="renderTransactions()" placeholder="From">
+          <input type="date" class="form-control" id="f-to" onchange="renderTransactions()" placeholder="To">
           <select class="form-control" id="f-sort" onchange="renderTransactions()">
-            <option value="date-desc">Date (Newest)</option>
-            <option value="date-asc">Date (Oldest)</option>
-            <option value="amount-desc">Amount (High)</option>
-            <option value="amount-asc">Amount (Low)</option>
+            <option value="date-desc">Newest First</option>
+            <option value="date-asc">Oldest First</option>
+            <option value="amount-desc">Highest Amount</option>
+            <option value="amount-asc">Lowest Amount</option>
           </select>
-        </div>
-        <div class="form-group" style="display:flex;align-items:flex-end">
           <button class="btn btn-ghost btn-sm" onclick="clearFilters()"><i class="fas fa-times"></i> Clear</button>
         </div>
       </div>
 
-      <!-- Table -->
-      <div class="card" style="padding:0;overflow:hidden">
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Category</th>
-                <th>Description / Notes</th>
-                <th>Tags</th>
-                <th>Payment</th>
-                <th style="text-align:right">Amount</th>
-                <th style="text-align:right">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="tx-body"></tbody>
-          </table>
-        </div>
-        <div id="tx-empty" class="empty-state" style="display:none">
-          <div class="empty-icon"><i class="fas fa-receipt"></i></div>
-          <h3>No transactions found</h3>
-          <p>Try adjusting your filters or add a new transaction</p>
-        </div>
-        <div id="tx-footer" style="padding:12px 18px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-          <span id="tx-count-text" style="font-size:.75rem;color:var(--muted)"></span>
-          <span id="tx-total-text" style="font-family:var(--fm);font-size:.78rem;color:var(--muted2)"></span>
+      <!-- Transaction Cards (mobile) / Table (desktop) -->
+      <div class="tx-container">
+        <!-- Desktop table -->
+        <div class="card tx-table-card">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th><th>Category</th><th>Description</th>
+                  <th>Payment</th><th style="text-align:right">Amount</th><th style="text-align:right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tx-body"></tbody>
+            </table>
+          </div>
+          <div id="tx-empty" class="empty-state" style="display:none">
+            <div class="empty-icon"><i class="fas fa-receipt"></i></div>
+            <h3>No transactions found</h3>
+            <p>Try adjusting your filters or <button onclick="openModal()" class="link-btn">add a transaction</button></p>
+          </div>
+          <div id="tx-footer" style="display:none;padding:12px 18px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+            <span id="tx-count-text" style="font-size:.75rem;color:var(--muted)"></span>
+            <span id="tx-total-text" style="font-family:var(--fm);font-size:.78rem;font-weight:700"></span>
+          </div>
         </div>
       </div>
     </div><!-- /page-transactions -->
 
-    <!-- ==================================================
-         PAGE: BUDGETS
-         ================================================== -->
+    <!-- ══════════════════ BUDGETS ══════════════════ -->
     <div class="page" id="page-budgets">
-
-      <h2 style="font-size:1.3rem;font-weight:800;letter-spacing:-.3px;margin-bottom:4px">Monthly Budgets</h2>
-      <p style="font-size:.78rem;color:var(--muted);margin-bottom:22px">Set spending limits per category</p>
-
+      <div class="page-header">
+        <div><h2 class="page-title-lg">Monthly Budgets</h2><p class="page-subtitle">Set and track spending limits per category</p></div>
+      </div>
       <div class="g-left">
-
-        <!-- Set Budget Form -->
         <div class="card" style="align-self:start">
           <div class="card-head"><div class="card-title-lg">Set Budget Limit</div></div>
-
           <div class="form-group">
             <div class="form-label">Category</div>
             <select class="form-control" id="b-cat">
@@ -451,520 +555,469 @@
               <option value="Other">📦 Other</option>
             </select>
           </div>
-
           <div class="form-group">
             <div class="form-label">Monthly Limit</div>
-            <div class="input-group">
-              <span class="input-prefix" id="b-sym">₹</span>
-              <input type="number" class="form-control" id="b-limit" placeholder="5000" min="1" step="1">
-            </div>
+            <div class="input-group"><span class="input-prefix" id="b-sym">₹</span><input type="number" class="form-control" id="b-limit" placeholder="5000" min="1" step="1"></div>
           </div>
-
           <div class="form-group">
-            <div class="form-label">Alert at (%)</div>
-            <input type="range" id="b-alert-pct" min="50" max="100" value="80"
-              oninput="document.getElementById('b-alert-val').textContent = this.value + '%'"
-              style="width:100%;accent-color:var(--accent);cursor:pointer">
-            <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-top:4px">
-              <span>50%</span>
-              <span id="b-alert-val" style="color:var(--accent);font-weight:700">80%</span>
-              <span>100%</span>
-            </div>
+            <div class="form-label">Alert threshold: <span id="b-alert-val" style="color:var(--accent);font-weight:700">80%</span></div>
+            <input type="range" id="b-alert-pct" min="50" max="100" value="80" oninput="document.getElementById('b-alert-val').textContent=this.value+'%'" style="width:100%;accent-color:var(--accent);cursor:pointer">
           </div>
-
-          <button class="btn btn-primary" style="width:100%" onclick="saveBudget()">
-            <i class="fas fa-save"></i> Save Budget
-          </button>
+          <button class="btn btn-primary" style="width:100%" onclick="saveBudget()"><i class="fas fa-save"></i> Save Budget</button>
         </div>
-
-        <!-- Budget Status -->
         <div class="card">
-          <div class="card-head">
-            <div class="card-title-lg">Budget Status</div>
-            <span style="font-size:.72rem;color:var(--muted)" id="budget-month-label"></span>
-          </div>
-          <div id="budget-list">
-            <div class="empty-state">
-              <div class="empty-icon"><i class="fas fa-wallet"></i></div>
-              <h3>No budgets set</h3>
-              <p>Create your first budget limit on the left</p>
-            </div>
-          </div>
+          <div class="card-head"><div class="card-title-lg">Budget Status</div><span style="font-size:.72rem;color:var(--muted)" id="budget-month-label"></span></div>
+          <div id="budget-list"><div class="empty-state"><div class="empty-icon"><i class="fas fa-wallet"></i></div><h3>No budgets set</h3><p>Create your first budget limit</p></div></div>
         </div>
-
       </div>
-    </div><!-- /page-budgets -->
+    </div>
 
-    <!-- ==================================================
-         PAGE: SAVINGS GOALS
-         ================================================== -->
+    <!-- ══════════════════ SAVINGS GOALS ══════════════════ -->
     <div class="page" id="page-goals">
-
-      <h2 style="font-size:1.3rem;font-weight:800;letter-spacing:-.3px;margin-bottom:4px">Savings Goals</h2>
-      <p style="font-size:.78rem;color:var(--muted);margin-bottom:22px">Stay on track with your financial targets</p>
-
+      <div class="page-header">
+        <div><h2 class="page-title-lg">Savings Goals</h2><p class="page-subtitle">Stay on track with your financial targets</p></div>
+      </div>
       <div class="g-left">
-
-        <!-- Create Goal Form -->
         <div class="card" style="align-self:start">
           <div class="card-head"><div class="card-title-lg">Create New Goal</div></div>
-
-          <div class="form-group">
-            <div class="form-label">Goal Name</div>
-            <input type="text" class="form-control" id="g-name" placeholder="e.g. Emergency Fund">
-          </div>
-
+          <div class="form-group"><div class="form-label">Goal Name</div><input type="text" class="form-control" id="g-name" placeholder="e.g. Emergency Fund, New Car"></div>
           <div class="form-row">
-            <div class="form-group" style="margin-bottom:0">
-              <div class="form-label">Target Amount</div>
-              <div class="input-group">
-                <span class="input-prefix" id="g-sym">₹</span>
-                <input type="number" class="form-control" id="g-target" placeholder="50000" min="1">
-              </div>
-            </div>
-            <div class="form-group" style="margin-bottom:0">
-              <div class="form-label">Already Saved</div>
-              <div class="input-group">
-                <span class="input-prefix" id="g-sym2">₹</span>
-                <input type="number" class="form-control" id="g-saved" placeholder="0" min="0">
-              </div>
-            </div>
+            <div class="form-group" style="margin-bottom:0"><div class="form-label">Target Amount</div><div class="input-group"><span class="input-prefix" id="g-sym">₹</span><input type="number" class="form-control" id="g-target" placeholder="50000" min="1"></div></div>
+            <div class="form-group" style="margin-bottom:0"><div class="form-label">Already Saved</div><div class="input-group"><span class="input-prefix" id="g-sym2">₹</span><input type="number" class="form-control" id="g-saved" placeholder="0" min="0"></div></div>
           </div>
-
           <div class="form-row" style="margin-top:14px">
-            <div class="form-group" style="margin-bottom:0">
-              <div class="form-label">Target Date</div>
-              <input type="date" class="form-control" id="g-date">
-            </div>
-            <div class="form-group" style="margin-bottom:0">
-              <div class="form-label">Priority</div>
-              <select class="form-control" id="g-priority">
-                <option value="high">🔴 High</option>
-                <option value="medium" selected>🟡 Medium</option>
-                <option value="low">🟢 Low</option>
-              </select>
-            </div>
+            <div class="form-group" style="margin-bottom:0"><div class="form-label">Target Date</div><input type="date" class="form-control" id="g-date"></div>
+            <div class="form-group" style="margin-bottom:0"><div class="form-label">Priority</div><select class="form-control" id="g-priority"><option value="high">🔴 High</option><option value="medium" selected>🟡 Medium</option><option value="low">🟢 Low</option></select></div>
           </div>
-
-          <div class="form-group" style="margin-top:14px">
-            <div class="form-label">Description (optional)</div>
-            <input type="text" class="form-control" id="g-desc" placeholder="Why is this goal important?">
-          </div>
-
-          <button class="btn btn-primary" style="width:100%;margin-top:6px" onclick="saveGoal()">
-            <i class="fas fa-plus"></i> Add Goal
-          </button>
+          <div class="form-group" style="margin-top:14px"><div class="form-label">Description (optional)</div><input type="text" class="form-control" id="g-desc" placeholder="Why is this goal important?"></div>
+          <button class="btn btn-primary" style="width:100%;margin-top:6px" onclick="saveGoal()"><i class="fas fa-plus"></i> Add Goal</button>
         </div>
-
-        <!-- Goals List -->
-        <div id="goals-list">
-          <div class="empty-state">
-            <div class="empty-icon"><i class="fas fa-bullseye"></i></div>
-            <h3>No savings goals yet</h3>
-            <p>Create your first goal to start tracking progress</p>
-          </div>
-        </div>
-
+        <div id="goals-list"><div class="empty-state"><div class="empty-icon"><i class="fas fa-bullseye"></i></div><h3>No savings goals yet</h3><p>Create your first goal to start tracking progress</p></div></div>
       </div>
-    </div><!-- /page-goals -->
+    </div>
 
-    <!-- ==================================================
-         PAGE: RECURRING
-         ================================================== -->
+    <!-- ══════════════════ RECURRING ══════════════════ -->
     <div class="page" id="page-recurring">
-
-      <h2 style="font-size:1.3rem;font-weight:800;letter-spacing:-.3px;margin-bottom:4px">Recurring Transactions</h2>
-      <p style="font-size:.78rem;color:var(--muted);margin-bottom:22px">Autotrack subscriptions, rent, salary &amp; more</p>
-
+      <div class="page-header">
+        <div><h2 class="page-title-lg">Recurring Transactions</h2><p class="page-subtitle">Autotrack subscriptions, rent, salary &amp; more</p></div>
+      </div>
       <div class="g-left">
-
-        <!-- Add Recurring Form -->
         <div class="card" style="align-self:start">
           <div class="card-head"><div class="card-title-lg">Add Recurring</div></div>
-
           <div class="type-toggle">
-            <button class="type-btn exp active" id="rt-exp" onclick="setRecType('expense')">Expense</button>
-            <button class="type-btn inc"         id="rt-inc" onclick="setRecType('income')">Income</button>
+            <button class="type-btn exp active" id="rt-exp" onclick="setRecType('expense')"><i class="fas fa-arrow-up"></i> Expense</button>
+            <button class="type-btn inc" id="rt-inc" onclick="setRecType('income')"><i class="fas fa-arrow-down"></i> Income</button>
           </div>
-
-          <div class="form-group">
-            <div class="form-label">Name</div>
-            <input type="text" class="form-control" id="r-name" placeholder="e.g. Rent, Netflix, Salary">
-          </div>
-
+          <div class="form-group"><div class="form-label">Name</div><input type="text" class="form-control" id="r-name" placeholder="e.g. Rent, Netflix, Salary"></div>
           <div class="form-row">
-            <div class="form-group" style="margin-bottom:0">
-              <div class="form-label">Category</div>
-              <select class="form-control" id="r-cat">
-                <option value="Housing">Housing</option>
-                <option value="Food">Food</option>
-                <option value="Utilities">Utilities</option>
-                <option value="Entertainment">Entertainment</option>
-                <option value="Transportation">Transportation</option>
-                <option value="Education">Education</option>
-                <option value="Healthcare">Healthcare</option>
-                <option value="Shopping">Shopping</option>
-                <option value="Salary">Salary</option>
-                <option value="Freelance">Freelance</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-            <div class="form-group" style="margin-bottom:0">
-              <div class="form-label">Frequency</div>
-              <select class="form-control" id="r-freq">
-                <option value="daily">Daily</option>
-                <option value="weekly">Weekly</option>
-                <option value="monthly" selected>Monthly</option>
-                <option value="quarterly">Quarterly</option>
-                <option value="yearly">Yearly</option>
-              </select>
-            </div>
+            <div class="form-group" style="margin-bottom:0"><div class="form-label">Category</div><select class="form-control" id="r-cat"><option value="Housing">Housing</option><option value="Food">Food</option><option value="Utilities">Utilities</option><option value="Entertainment">Entertainment</option><option value="Transportation">Transportation</option><option value="Education">Education</option><option value="Healthcare">Healthcare</option><option value="Shopping">Shopping</option><option value="Salary">Salary</option><option value="Freelance">Freelance</option><option value="Other">Other</option></select></div>
+            <div class="form-group" style="margin-bottom:0"><div class="form-label">Frequency</div><select class="form-control" id="r-freq"><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly" selected>Monthly</option><option value="quarterly">Quarterly</option><option value="yearly">Yearly</option></select></div>
           </div>
-
-          <div class="form-group" style="margin-top:14px">
-            <div class="form-label">Amount</div>
-            <div class="input-group">
-              <span class="input-prefix" id="r-sym">₹</span>
-              <input type="number" class="form-control" id="r-amount" placeholder="0.00" min="1" step="0.01">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="form-label">Next Due Date</div>
-            <input type="date" class="form-control" id="r-date">
-          </div>
-
-          <button class="btn btn-primary" style="width:100%" onclick="saveRecurring()">
-            <i class="fas fa-plus"></i> Add Recurring
-          </button>
+          <div class="form-group" style="margin-top:14px"><div class="form-label">Amount</div><div class="input-group"><span class="input-prefix" id="r-sym">₹</span><input type="number" class="form-control" id="r-amount" placeholder="0.00" min="1" step="0.01"></div></div>
+          <div class="form-group"><div class="form-label">Next Due Date</div><input type="date" class="form-control" id="r-date"></div>
+          <button class="btn btn-primary" style="width:100%" onclick="saveRecurring()"><i class="fas fa-plus"></i> Add Recurring</button>
         </div>
-
-        <!-- Recurring List -->
         <div>
           <div id="rec-summary" class="card" style="margin-bottom:16px"></div>
           <div class="card">
-            <div class="card-head">
-              <div class="card-title-lg">Recurring List</div>
-              <span id="rec-count" style="font-size:.72rem;color:var(--muted)"></span>
-            </div>
-            <div id="rec-list">
-              <div class="empty-state" style="padding:36px 0">
-                <div class="empty-icon"><i class="fas fa-rotate"></i></div>
-                <h3>No recurring transactions</h3>
-                <p>Add subscriptions, rent, or salary above</p>
-              </div>
-            </div>
+            <div class="card-head"><div class="card-title-lg">Recurring List</div><span id="rec-count" style="font-size:.72rem;color:var(--muted)"></span></div>
+            <div id="rec-list"><div class="empty-state" style="padding:36px 0"><div class="empty-icon"><i class="fas fa-rotate"></i></div><h3>No recurring items</h3><p>Add subscriptions, rent, or salary</p></div></div>
           </div>
         </div>
-
       </div>
-    </div><!-- /page-recurring -->
+    </div>
 
-    <!-- ==================================================
-         PAGE: ANALYTICS  (login-gated)
-         ================================================== -->
+    <!-- ══════════════════ ANALYTICS ══════════════════ -->
     <div class="page" id="page-analytics">
-
-      <!-- Login wall shown when logged out -->
       <div id="analytics-login-wall" style="display:none">
-        <div class="login-wall-card">
-          <div class="login-wall-icon"><i class="fas fa-chart-line"></i></div>
-          <h2>Analytics requires sign-in</h2>
-          <p>Your detailed financial insights are securely stored in the cloud. Sign in to access your Analytics dashboard.</p>
-          <button class="btn btn-primary" onclick="document.getElementById('auth-screen').style.display='flex'">
-            <i class="fas fa-right-to-bracket"></i> Sign In to View Analytics
-          </button>
-        </div>
+        <div class="login-wall-card"><div class="login-wall-icon"><i class="fas fa-chart-line"></i></div><h2>Analytics requires sign-in</h2><p>Your detailed financial insights are securely stored in the cloud.</p><button class="btn btn-primary" onclick="document.getElementById('auth-screen').style.display='flex'"><i class="fas fa-right-to-bracket"></i> Sign In</button></div>
       </div>
-
-      <!-- Real analytics content -->
       <div id="analytics-content">
-        <h2 style="font-size:1.3rem;font-weight:800;letter-spacing:-.3px;margin-bottom:4px">Analytics</h2>
-        <p style="font-size:.78rem;color:var(--muted);margin-bottom:22px">Deep dive into your financial patterns</p>
+        <div class="page-header"><div><h2 class="page-title-lg">Analytics</h2><p class="page-subtitle">Deep dive into your financial patterns</p></div></div>
 
-        <!-- 12-month line chart -->
+        <!-- Key metrics summary -->
+        <div class="analytics-summary" id="analytics-metrics"></div>
+
+        <!-- Charts -->
         <div class="card" style="margin-bottom:20px">
           <div class="card-head">
             <div class="card-title-lg">12-Month Trend</div>
             <div style="display:flex;gap:14px;align-items:center;font-size:.72rem">
-              <span style="display:flex;align-items:center;gap:5px">
-                <span style="width:12px;height:3px;background:var(--income);border-radius:99px;display:inline-block"></span> Income
-              </span>
-              <span style="display:flex;align-items:center;gap:5px">
-                <span style="width:12px;height:3px;background:var(--expense);border-radius:99px;display:inline-block"></span> Expenses
-              </span>
+              <span style="display:flex;align-items:center;gap:5px"><span style="width:12px;height:3px;background:var(--income);border-radius:99px;display:inline-block"></span>Income</span>
+              <span style="display:flex;align-items:center;gap:5px"><span style="width:12px;height:3px;background:var(--expense);border-radius:99px;display:inline-block"></span>Expenses</span>
             </div>
           </div>
-          <div class="chart-wrap" style="height:240px"><canvas id="chart-line"></canvas></div>
+          <div class="chart-wrap" style="height:220px"><canvas id="chart-line"></canvas></div>
         </div>
-
         <div class="g2" style="margin-bottom:20px">
-          <!-- All-time donut -->
-          <div class="card">
-            <div class="card-head"><div class="card-title-lg">All-Time Spending</div></div>
-            <div class="chart-wrap" style="height:220px"><canvas id="chart-donut"></canvas></div>
-          </div>
-
-          <!-- Key metrics -->
-          <div class="card">
-            <div class="card-head"><div class="card-title-lg">Key Metrics</div></div>
-            <div id="analytics-metrics"></div>
-            <div class="divider"></div>
-            <div class="card-title" style="margin-bottom:12px">Top Categories (All Time)</div>
-            <div id="analytics-top-cats"></div>
-          </div>
+          <div class="card"><div class="card-head"><div class="card-title-lg">All-Time Spending</div></div><div class="chart-wrap" style="height:200px"><canvas id="chart-donut"></canvas></div></div>
+          <div class="card"><div class="card-head"><div class="card-title-lg">Key Metrics</div></div><div id="analytics-stats-inner"></div><div class="divider"></div><div class="card-title" style="margin-bottom:12px">Top Categories</div><div id="analytics-top-cats"></div></div>
         </div>
-
-        <!-- Daily spending bar -->
-        <div class="card">
-          <div class="card-head">
-            <div class="card-title-lg">Daily Spending – Last 30 Days</div>
-            <span style="font-size:.72rem;color:var(--muted)">Each bar = one day</span>
-          </div>
-          <div class="chart-wrap" style="height:200px"><canvas id="chart-daily"></canvas></div>
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-head"><div class="card-title-lg">Daily Spending – Last 30 Days</div><span style="font-size:.72rem;color:var(--muted)">Each bar = one day</span></div>
+          <div class="chart-wrap" style="height:180px"><canvas id="chart-daily"></canvas></div>
+        </div>
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-head"><div class="card-title-lg">Spending Heatmap</div><span style="font-size:.72rem;color:var(--muted)">Last 6 months</span></div>
+          <div id="heatmap-container" style="overflow-x:auto;padding:8px 0"></div>
         </div>
       </div>
+    </div>
 
-    </div><!-- /page-analytics -->
-
-    <!-- ==================================================
-         PAGE: SETTINGS  (login-gated)
-         ================================================== -->
+    <!-- ══════════════════ SETTINGS ══════════════════ -->
     <div class="page" id="page-settings">
-
-      <!-- Login wall shown when logged out -->
       <div id="settings-login-wall" style="display:none">
-        <div class="login-wall-card">
-          <div class="login-wall-icon"><i class="fas fa-gear"></i></div>
-          <h2>Settings requires sign-in</h2>
-          <p>Sign in to save your preferences, export your data, and manage your Spendly account.</p>
-          <button class="btn btn-primary" onclick="document.getElementById('auth-screen').style.display='flex'">
-            <i class="fas fa-right-to-bracket"></i> Sign In to Access Settings
-          </button>
-        </div>
+        <div class="login-wall-card"><div class="login-wall-icon"><i class="fas fa-gear"></i></div><h2>Settings requires sign-in</h2><p>Sign in to save preferences and manage your account.</p><button class="btn btn-primary" onclick="document.getElementById('auth-screen').style.display='flex'"><i class="fas fa-right-to-bracket"></i> Sign In</button></div>
       </div>
-
-      <!-- Real settings content -->
       <div id="settings-content">
-        <h2 style="font-size:1.3rem;font-weight:800;letter-spacing:-.3px;margin-bottom:4px">Settings</h2>
-        <p style="font-size:.78rem;color:var(--muted);margin-bottom:22px">Customize Spendly to your needs</p>
-
+        <div class="page-header"><div><h2 class="page-title-lg">Settings</h2><p class="page-subtitle">Customize Nestfy to your needs</p></div></div>
         <div class="g2">
-
-          <!-- Left: Profile & Preferences -->
           <div>
             <div class="card" style="margin-bottom:16px">
-              <div class="card-head"><div class="card-title-lg">Profile</div></div>
+              <div class="card-head"><div class="card-title-lg"><i class="fas fa-user-circle" style="color:var(--accent);margin-right:8px"></i>Profile</div></div>
+              <div class="form-group"><div class="form-label">Your Name</div><input type="text" class="form-control" id="s-name" placeholder="e.g. Your Name" oninput="saveSettings()"></div>
               <div class="form-group">
-                <div class="form-label">Your Name</div>
-                <input type="text" class="form-control" id="s-name" placeholder="e.g. Nejamul Haque" oninput="saveSettings()">
+                <div class="form-label">Email</div>
+                <div class="form-control" id="settings-user-email" style="opacity:.6;cursor:default;display:flex;align-items:center;gap:8px"><i class="fas fa-envelope" style="color:var(--muted)"></i><span>—</span></div>
               </div>
-              <div class="form-group">
-                <div class="form-label">Default Currency</div>
-                <select class="form-control" id="s-currency" onchange="setCurrency(this.value)">
-                  <option value="INR">₹ INR – Indian Rupee</option>
-                  <option value="USD">$ USD – US Dollar</option>
-                  <option value="EUR">€ EUR – Euro</option>
-                  <option value="GBP">£ GBP – Pound</option>
-                  <option value="JPY">¥ JPY – Yen</option>
-                  <option value="CAD">CA$ CAD – Canadian</option>
-                  <option value="AUD">A$ AUD – Australian</option>
-                  <option value="SGD">S$ SGD – Singapore</option>
-                  <option value="BDT">৳ BDT – Bangladeshi</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <div class="form-label">Monthly Income (for savings rate)</div>
-                <div class="input-group">
-                  <span class="input-prefix" id="s-sym">₹</span>
-                  <input type="number" class="form-control" id="s-income" placeholder="50000" oninput="saveSettings()">
-                </div>
-              </div>
+              <div class="form-group"><div class="form-label">Default Currency</div><select class="form-control" id="s-currency" onchange="setCurrency(this.value)"><option value="INR">₹ INR – Indian Rupee</option><option value="USD">$ USD – US Dollar</option><option value="EUR">€ EUR – Euro</option><option value="GBP">£ GBP – Pound</option><option value="JPY">¥ JPY – Yen</option><option value="CAD">CA$ CAD</option><option value="AUD">A$ AUD</option><option value="SGD">S$ SGD</option><option value="BDT">৳ BDT</option></select></div>
+              <div class="form-group"><div class="form-label">Monthly Income (for savings rate)</div><div class="input-group"><span class="input-prefix" id="s-sym">₹</span><input type="number" class="form-control" id="s-monthly-income" placeholder="50000" oninput="saveSettings()"></div></div>
             </div>
-
             <div class="card">
-              <div class="card-head"><div class="card-title-lg">Preferences</div></div>
-              <div class="setting-row">
-                <div class="setting-info">
-                  <h4>Budget Alerts</h4>
-                  <p>Show warnings when approaching limits</p>
-                </div>
-                <label class="toggle-switch">
-                  <input type="checkbox" id="pref-alerts" onchange="saveSettings()" checked>
-                  <span class="toggle-slider"></span>
-                </label>
-              </div>
-              <div class="setting-row">
-                <div class="setting-info">
-                  <h4>Compact Table View</h4>
-                  <p>Show fewer columns on transactions page</p>
-                </div>
-                <label class="toggle-switch">
-                  <input type="checkbox" id="pref-compact" onchange="saveSettings()">
-                  <span class="toggle-slider"></span>
-                </label>
-              </div>
+              <div class="card-head"><div class="card-title-lg"><i class="fas fa-sliders" style="color:var(--accent);margin-right:8px"></i>Preferences</div></div>
+              <div class="setting-row"><div class="setting-info"><h4>Budget Alerts</h4><p>Warn when approaching spending limits</p></div><label class="toggle-switch"><input type="checkbox" id="pref-alerts" onchange="saveSettings()" checked><span class="toggle-slider"></span></label></div>
+              <div class="setting-row"><div class="setting-info"><h4>Compact Table View</h4><p>Denser transaction list layout</p></div><label class="toggle-switch"><input type="checkbox" id="pref-compact" onchange="saveSettings()"><span class="toggle-slider"></span></label></div>
             </div>
           </div>
-
-          <!-- Right: Data & About -->
           <div>
             <div class="card" style="margin-bottom:16px">
-              <div class="card-head"><div class="card-title-lg">Data Management</div></div>
-              <p style="font-size:.78rem;color:var(--muted);margin-bottom:16px">
-                Export a backup or import previous data.
-              </p>
-              <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <div class="card-head"><div class="card-title-lg"><i class="fas fa-database" style="color:var(--accent);margin-right:8px"></i>Data Management</div></div>
+              <p style="font-size:.78rem;color:var(--muted);margin-bottom:16px">Export your data or import a previous backup.</p>
+              <div class="data-btns">
                 <button class="btn btn-success" onclick="exportJSON()"><i class="fas fa-download"></i> Export Backup</button>
                 <button class="btn btn-ghost" onclick="document.getElementById('import-file').click()"><i class="fas fa-upload"></i> Import Backup</button>
-                <button class="btn btn-success" onclick="exportCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
+                <button class="btn btn-ghost" onclick="exportCSV()"><i class="fas fa-file-csv"></i> Export CSV</button>
               </div>
               <input type="file" id="import-file" accept=".json" style="display:none" onchange="importJSON(this)">
-            </div>
-
-            <div class="card" style="border-color:rgba(255,107,107,.2);margin-bottom:16px">
-              <div class="card-head">
-                <div class="card-title-lg" style="color:var(--expense)">
-                  <i class="fas fa-triangle-exclamation"></i> Danger Zone
-                </div>
+              <div id="install-app-row" style="display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+                <button class="btn btn-primary" id="install-app-btn" onclick="triggerInstall()">
+                  <i class="fas fa-download"></i> Install App on Device
+                </button>
+                <p style="font-size:.72rem;color:var(--muted);margin-top:6px">Add Nestfy to your home screen for a native app experience.</p>
               </div>
-              <p style="font-size:.78rem;color:var(--muted);margin-bottom:16px">
-                Permanently deletes all data. Cannot be undone.
-              </p>
-              <button class="btn btn-danger" onclick="confirmClearAll()">
-                <i class="fas fa-trash-alt"></i> Delete All Data
-              </button>
             </div>
-
-            <div class="card" style="border-color:rgba(0,212,170,.1)">
-              <div class="card-title" style="margin-bottom:12px">About Spendly</div>
+            <div class="card" style="border-color:rgba(255,107,107,.25);margin-bottom:16px">
+              <div class="card-head"><div class="card-title-lg" style="color:var(--expense)"><i class="fas fa-triangle-exclamation"></i> Danger Zone</div></div>
+              <p style="font-size:.78rem;color:var(--muted);margin-bottom:16px">Permanently deletes all your data. This cannot be undone.</p>
+              <button class="btn btn-danger" onclick="confirmClearAll()"><i class="fas fa-trash-alt"></i> Delete All Data</button>
+            </div>
+            <div class="card" style="border-color:rgba(0,212,170,.12)">
+              <div class="card-head"><div class="card-title-lg"><i class="fas fa-info-circle" style="color:var(--accent);margin-right:8px"></i>About Nestfy</div></div>
               <div id="about-stats"></div>
             </div>
           </div>
-
         </div>
       </div>
-
-    </div><!-- /page-settings -->
+    </div>
 
   </div><!-- /content -->
 </main>
 
-<!-- ============================================================
-     MODAL: ADD / EDIT TRANSACTION
-     ============================================================ -->
-<div class="overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+<!-- ══ FAB Mobile Add Button ══ -->
+<button class="fab" onclick="openModal()" id="fab-btn" title="Add Transaction"><i class="fas fa-plus"></i></button>
 
+<!-- ══ Bottom Navigation ══ -->
+<nav id="bottom-nav">
+  <button class="bottom-nav-btn active" data-page="dashboard" onclick="nav(this,'dashboard')"><i class="fas fa-home"></i><span>Home</span></button>
+  <button class="bottom-nav-btn" data-page="transactions" onclick="nav(this,'transactions')"><i class="fas fa-list-ul"></i><span>Transactions</span></button>
+  <button class="bottom-nav-btn bottom-nav-add" onclick="openModal()"><div class="bottom-nav-add-btn"><i class="fas fa-plus"></i></div><span>Add</span></button>
+  <button class="bottom-nav-btn" data-page="analytics" onclick="navProtected(this,'analytics')"><i class="fas fa-chart-line"></i><span>Analytics</span></button>
+  <button class="bottom-nav-btn" data-page="settings" onclick="navProtected(this,'settings')"><i class="fas fa-gear"></i><span>Settings</span></button>
+</nav>
+
+<!-- ══ Transaction Modal ══ -->
+<div class="overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+  <div class="modal" role="dialog" aria-modal="true">
     <div class="modal-head">
       <div class="modal-title" id="modal-title">Add Transaction</div>
-      <button class="modal-close" onclick="closeModal()" aria-label="Close modal">
-        <i class="fas fa-times"></i>
-      </button>
+      <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
     </div>
-
-    <!-- Income / Expense Toggle -->
     <div class="type-toggle">
-      <button class="type-btn exp active" id="tt-exp" onclick="setType('expense')">
-        <i class="fas fa-arrow-up"></i> Expense
-      </button>
-      <button class="type-btn inc" id="tt-inc" onclick="setType('income')">
-        <i class="fas fa-arrow-down"></i> Income
-      </button>
+      <button class="type-btn exp active" id="tt-exp" onclick="setType('expense')"><i class="fas fa-arrow-up"></i> Expense</button>
+      <button class="type-btn inc" id="tt-inc" onclick="setType('income')"><i class="fas fa-arrow-down"></i> Income</button>
     </div>
-
     <div class="form-row">
-      <div class="form-group" style="margin-bottom:0">
-        <div class="form-label">Date *</div>
-        <input type="date" class="form-control" id="m-date" required>
-      </div>
-      <div class="form-group" style="margin-bottom:0">
-        <div class="form-label">Category *</div>
-        <select class="form-control" id="m-cat" required></select>
-      </div>
+      <div class="form-group" style="margin-bottom:0"><div class="form-label">Date *</div><input type="date" class="form-control" id="m-date" required></div>
+      <div class="form-group" style="margin-bottom:0"><div class="form-label">Category *</div><select class="form-control" id="m-cat" required></select></div>
     </div>
-
     <div class="form-group" style="margin-top:14px">
       <div class="form-label">Amount *</div>
-      <div class="input-group">
-        <span class="input-prefix" id="m-sym">₹</span>
-        <input type="number" class="form-control" id="m-amount" placeholder="0.00" step="0.01" min="0.01" required>
-      </div>
+      <div class="input-group"><span class="input-prefix" id="m-sym">₹</span><input type="number" class="form-control" id="m-amount" placeholder="0.00" step="0.01" min="0.01" required></div>
     </div>
-
-    <div class="form-group">
-      <div class="form-label">Description</div>
-      <input type="text" class="form-control" id="m-desc" placeholder="What was this for?">
-    </div>
-
+    <div class="form-group"><div class="form-label">Description</div><input type="text" class="form-control" id="m-desc" placeholder="What was this for?" id="m-desc-input"></div>
     <div class="form-row">
       <div class="form-group" style="margin-bottom:0">
-        <div class="form-label">Payment Method</div>
-        <select class="form-control" id="m-payment">
-          <option value="">– Select –</option>
-          <option>Cash</option>
-          <option>Card</option>
-          <option>UPI / GPay</option>
-          <option>Net Banking</option>
-          <option>EMI</option>
-          <option>Cheque</option>
-          <option>Crypto</option>
+        <div class="form-label">Wallet</div>
+        <select class="form-control" id="m-wallet">
+          <option value="">No specific wallet</option>
+          <option value="cash">💵 Cash</option><option value="bank">🏦 Bank</option>
+          <option value="card">💳 Card</option><option value="upi">📱 UPI</option>
+          <option value="savings">🐷 Savings</option>
         </select>
       </div>
       <div class="form-group" style="margin-bottom:0">
-        <div class="form-label">Tags (comma-separated)</div>
-        <input type="text" class="form-control" id="m-tags" placeholder="e.g. work, urgent">
+        <div class="form-label">Payment Method</div>
+        <select class="form-control" id="m-payment">
+          <option value="">– Select –</option><option>Cash</option><option>Card</option>
+          <option>UPI / GPay</option><option>Net Banking</option><option>EMI</option>
+          <option>Cheque</option>
+        </select>
       </div>
     </div>
-
-    <div class="form-group" style="margin-top:14px">
-      <div class="form-label">Notes</div>
-      <textarea class="form-control" id="m-notes" placeholder="Any extra details..."></textarea>
-    </div>
-
+    <div class="form-group"><div class="form-label">Tags (comma-separated)</div><input type="text" class="form-control" id="m-tags" placeholder="e.g. work, urgent, food"></div>
+    <div class="form-group"><div class="form-label">Notes</div><textarea class="form-control" id="m-notes" placeholder="Any extra details..." style="resize:vertical;min-height:60px"></textarea></div>
     <input type="hidden" id="m-edit-id">
-
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveTransaction()">
-        <i class="fas fa-save"></i> <span id="modal-save-label">Save</span>
-      </button>
-    </div>
-
-  </div>
-</div>
-
-<!-- ============================================================
-     MODAL: CONFIRM / DELETE DIALOG
-     ============================================================ -->
-<div class="overlay" id="confirm-overlay">
-  <div class="modal" style="max-width:380px" role="alertdialog" aria-modal="true">
-    <div class="modal-head">
-      <div class="modal-title" id="confirm-title">Confirm</div>
-      <button class="modal-close" onclick="closeConfirm()"><i class="fas fa-times"></i></button>
-    </div>
-    <p id="confirm-msg" style="color:var(--muted2);font-size:.88rem;margin-bottom:20px"></p>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="closeConfirm()">Cancel</button>
-      <button class="btn btn-danger" id="confirm-btn">Delete</button>
+      <button class="btn btn-primary" onclick="saveTransaction()"><i class="fas fa-save"></i> <span id="modal-save-label">Save</span></button>
     </div>
   </div>
 </div>
 
-<!-- ============================================================
-     TOAST NOTIFICATION CONTAINER
-     ============================================================ -->
+<!-- ══ Confirm Dialog ══ -->
+<div class="overlay" id="confirm-overlay" onclick="if(event.target===this)closeConfirm()">
+  <div class="modal" style="max-width:380px" role="alertdialog">
+    <div class="modal-head"><div class="modal-title" id="confirm-title">Confirm</div><button class="modal-close" onclick="closeConfirm()"><i class="fas fa-times"></i></button></div>
+    <p id="confirm-msg" style="color:var(--muted2);font-size:.88rem;margin-bottom:20px;line-height:1.6"></p>
+    <div class="modal-footer"><button class="btn btn-ghost" onclick="closeConfirm()">Cancel</button><button class="btn btn-danger" id="confirm-btn">Confirm</button></div>
+  </div>
+</div>
+
+<!-- ══ Toast Container ══ -->
 <div id="toast-container"></div>
 
-<!-- ============================================================
-     SPENDLY SCRIPT
-     ============================================================ -->
-<!--
-  ⚠️  type="module" is REQUIRED for Firebase ES module imports to work.
-  Chart.js is loaded via CDN above and remains available globally.
--->
+<!-- ══ Confetti Canvas ══ -->
+<canvas id="confetti-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99999;display:none"></canvas>
+
+<!-- ══ Pull to Refresh ══ -->
+<div id="pull-refresh-indicator"><i class="fas fa-rotate-right"></i><span>Release to refresh</span></div>
+
+<!-- ══ Command Palette ══ -->
+<div id="cmd-overlay" onclick="if(event.target===this)closeCmd()">
+  <div class="cmd-box">
+    <div class="cmd-input-wrap"><i class="fas fa-search"></i><input type="text" id="cmd-input" placeholder="Search pages, transactions, actions..." autocomplete="off" oninput="cmdSearch(this.value)" onkeydown="cmdKeydown(event)"><span class="cmd-kbd">ESC</span></div>
+    <div class="cmd-results" id="cmd-results"></div>
+    <div class="cmd-footer"><div class="cmd-footer-hint"><span class="cmd-kbd">↑↓</span> Navigate</div><div class="cmd-footer-hint"><span class="cmd-kbd">↵</span> Select</div><div class="cmd-footer-hint"><span class="cmd-kbd">ESC</span> Close</div></div>
+  </div>
+</div>
+
+<!-- ══ Onboarding ══ -->
+<div id="onboarding-overlay">
+  <div class="onboarding-card">
+    <div class="onboarding-steps" id="onboarding-dots"></div>
+    <div class="onboarding-icon" id="onboarding-icon"></div>
+    <div class="onboarding-title" id="onboarding-title"></div>
+    <div class="onboarding-desc" id="onboarding-desc"></div>
+    <div class="onboarding-nav">
+      <button class="btn-onboard-skip" onclick="skipOnboarding()">Skip</button>
+      <button class="btn-onboard-next" id="onboarding-next-btn" onclick="nextOnboarding()">Next <i class="fas fa-arrow-right"></i></button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ Notification Panel ══ -->
+<div id="notif-panel">
+  <div class="notif-header"><div class="notif-header-title">Notifications</div><button class="notif-clear" onclick="clearNotifications()">Clear all</button></div>
+  <div class="notif-list" id="notif-list"></div>
+</div>
+
+<!-- ══ Shortcuts Panel ══ -->
+<div id="shortcuts-panel" style="display:none">
+  <div class="shortcuts-header"><h3><i class="fas fa-keyboard"></i> Keyboard Shortcuts</h3><button onclick="toggleShortcuts()"><i class="fas fa-times"></i></button></div>
+  <div class="shortcuts-grid">
+    <div class="shortcut-item"><kbd>Ctrl</kbd><kbd>K</kbd><span>Search / Command</span></div>
+    <div class="shortcut-item"><kbd>Ctrl</kbd><kbd>N</kbd><span>New transaction</span></div>
+    <div class="shortcut-item"><kbd>Ctrl</kbd><kbd>↵</kbd><span>Save transaction</span></div>
+    <div class="shortcut-item"><kbd>Esc</kbd><span>Close any panel</span></div>
+    <div class="shortcut-item"><kbd>?</kbd><span>Show shortcuts</span></div>
+  </div>
+</div>
+<div id="shortcuts-overlay" onclick="toggleShortcuts()"></div>
+
+<!-- ══ PWA Install Banner ══ -->
+<div id="pwa-install-banner">
+  <div class="pwa-install-icon">
+      <svg viewBox="0 0 36 36" fill="none" style="width:24px;height:24px">
+        <defs><linearGradient id="piG" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00d4aa"/><stop offset="100%" stop-color="#7c6aff"/></linearGradient></defs>
+        <polygon points="18,3 31,10 31,26 18,33 5,26 5,10" fill="none" stroke="url(#piG)" stroke-width="2"/>
+        <path d="M11 29 L11 7 L25 29 L25 7" fill="none" stroke="url(#piG)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  <div class="pwa-install-text"><strong>Install Nestfy</strong><span>Add to home screen for the best experience</span></div>
+  <button id="pwa-install-btn">Install</button>
+  <button id="pwa-install-dismiss" aria-label="Dismiss"><i class="fas fa-times"></i></button>
+</div>
+
+<!-- ══ Proxy stubs ══ -->
+<script>
+(function() {
+  const fns = ['authTab','handleGoogleAuth','handleEmailLogin','handleEmailSignup','handleForgotPassword','handleForgotBack','handleLogout','togglePw','checkStrength','toggleTheme','toggleSidebar','openModal','closeModal','openModalIncome','handleOverlayClick','openConfirm','closeConfirm','setType','setRecType','saveTransaction','deleteTransaction','confirmClearAll','saveBudget','deleteBudget','saveGoal','deleteGoal','updateGoalSaved','saveRecurring','deleteRecurring','saveSettings','setCurrency','exportCSV','exportJSON','importJSON','navProtected','navMobile','navMonth','resetMonthNav','clearFilters','renderDashboard','renderTransactions','toggleShortcuts','openCmd','closeCmd','cmdSearch','cmdKeydown','cmdSelect','nextOnboarding','skipOnboarding','dismissOnboarding','toggleNotifPanel','markNotifRead','clearNotifications','setActiveWallet','addWalletPrompt','heatmapClick','loadAIInsights','undoDelete','nav','openDevModal','closeDevModal','openContribute','closeContribute','copyUPI','openLink','submitFeedback','performLogout'];
+  fns.forEach(fn => { if (!window[fn]) window[fn] = function() {}; });
+})();
+</script>
 <script type="module" src="script.js"></script>
+
+<!-- ══ SW + Update Banner ══ -->
+<style>
+#update-banner {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(135deg, #00d4aa, #00b894);
+  color: #000; padding: 13px 20px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  z-index: 10002; font-family: var(--ff); font-size: .88rem; font-weight: 700;
+  box-shadow: 0 -4px 24px rgba(0,0,0,.3);
+  transform: translateY(100%); transition: transform .4s cubic-bezier(.16,1,.3,1);
+}
+#update-banner.show { transform: translateY(0); }
+#update-banner button { background: rgba(0,0,0,.15); border: none; color: #000; font-family: var(--ff); font-size: .82rem; font-weight: 800; padding: 7px 16px; border-radius: 8px; cursor: pointer; white-space: nowrap; }
+</style>
+<div id="update-banner"><span>🎉 New version available!</span><button onclick="applyUpdate()">Update Now</button></div>
+<script>
+let _swReg=null,_newWorker=null;
+window.applyUpdate=function(){if(_newWorker)_newWorker.postMessage({type:'SKIP_WAITING'});else if(_swReg)_swReg.update().then(()=>location.reload());const b=document.getElementById('update-banner');if(b)b.classList.remove('show');};
+function showUpdateBanner(){const b=document.getElementById('update-banner');if(!b)return;requestAnimationFrame(()=>requestAnimationFrame(()=>b.classList.add('show')));}
+if('serviceWorker'in navigator){window.addEventListener('load',async()=>{try{_swReg=await navigator.serviceWorker.register('/sw.js');_swReg.update();function track(w){w.addEventListener('statechange',()=>{if(w.state==='installed'&&navigator.serviceWorker.controller){_newWorker=w;showUpdateBanner();}});}if(_swReg.installing)track(_swReg.installing);_swReg.addEventListener('updatefound',()=>{if(_swReg.installing)track(_swReg.installing);});let r=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(!r){r=true;location.reload();}});setInterval(()=>_swReg.update(),5*60*1000);}catch(e){console.warn('[SW]',e);}});}
+let dp=null;const ib=document.getElementById('pwa-install-banner'),ibtn=document.getElementById('pwa-install-btn'),idis=document.getElementById('pwa-install-dismiss');
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault(); dp=e;
+  window._deferredInstallPrompt = e;
+  setTimeout(()=>{if(ib)ib.classList.add('show');},800);
+  const row=document.getElementById('install-app-row');
+  if(row) row.style.display='block';
+});
+if(ibtn)ibtn.addEventListener('click',async()=>{if(!dp)return;dp.prompt();const{outcome}=await dp.userChoice;dp=null;window._deferredInstallPrompt=null;if(ib)ib.classList.remove('show');const row=document.getElementById('install-app-row');if(row)row.style.display='none';});
+if(idis)idis.addEventListener('click',()=>{if(ib)ib.classList.remove('show');dp=null;});
+window.addEventListener('appinstalled',()=>{if(ib)ib.classList.remove('show');dp=null;});
+window.addEventListener('DOMContentLoaded',()=>{if(new URLSearchParams(location.search).get('action')==='add')setTimeout(()=>window.openModal&&openModal(),800);});
+</script>
+<!-- ══ Developer / About Modal ══ -->
+<div class="overlay" id="dev-modal-overlay" onclick="if(event.target===this)closeDevModal()">
+  <div class="modal dev-modal" role="dialog" aria-modal="true">
+
+    <!-- Header -->
+    <div class="dev-modal-header">
+      <div class="dev-modal-cover"></div>
+      <div class="dev-modal-avatar-wrap">
+        <div class="dev-modal-avatar">NH</div>
+        <div class="dev-modal-badge"><i class="fas fa-code"></i></div>
+      </div>
+      <button class="modal-close dev-modal-close" onclick="closeDevModal()"><i class="fas fa-times"></i></button>
+    </div>
+
+    <!-- Profile -->
+    <div class="dev-modal-body">
+      <div class="dev-profile">
+        <h2 class="dev-name">Nejamul Haque</h2>
+        <p class="dev-title">Full-Stack &amp; AI Developer &amp; Designer</p>
+        <p class="dev-bio">Passionate about building clean, useful financial tools. Nestfy was built to help people in India and worldwide take control of their money — one transaction at a time.</p>
+
+        <!-- Social Links -->
+        <div class="dev-socials">
+          <a class="dev-social-btn" href="https://github.com/NejamulHaque" target="_blank" rel="noopener">
+            <i class="fab fa-github" style="color:#e6edf3;font-size:1rem"></i><span>GitHub</span>
+          </a>
+          <a class="dev-social-btn" href="https://x.com/Nejamul_Haque_" target="_blank" rel="noopener">
+            <i class="fab fa-twitter" style="color:#1d9bf0;font-size:1rem"></i><span>Twitter</span>
+          </a>
+          <a class="dev-social-btn" href="mailto:nejamulhaque.05@gmail.com">
+            <i class="fas fa-envelope" style="color:var(--accent);font-size:1rem"></i><span>Email</span>
+          </a>
+          <a class="dev-social-btn" href="https://linkedin.com/in/nejamulhaque" target="_blank" rel="noopener">
+            <i class="fab fa-linkedin-in" style="color:#0a66c2;font-size:1rem"></i><span>LinkedIn</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="dev-divider"></div>
+
+      <!-- App Stats -->
+      <div class="dev-stats-grid" id="dev-app-stats">
+        <div class="dev-stat"><span class="dev-stat-val" id="dev-stat-tx">—</span><span class="dev-stat-label">Transactions</span></div>
+        <div class="dev-stat"><span class="dev-stat-val" id="dev-stat-goals">—</span><span class="dev-stat-label">Goals</span></div>
+        <div class="dev-stat"><span class="dev-stat-val" id="dev-stat-days">—</span><span class="dev-stat-label">Days Tracking</span></div>
+        <div class="dev-stat"><span class="dev-stat-val">v2.0</span><span class="dev-stat-label">Version</span></div>
+      </div>
+
+      <div class="dev-divider"></div>
+
+      <!-- Contribute Section -->
+      <div class="dev-section-title"><i class="fas fa-heart" style="color:#ff6b6b;margin-right:7px"></i>Support &amp; Contribute</div>
+      <p class="dev-section-desc">Nestfy is free and open. If it's helped your finances, consider supporting the developer or contributing code.</p>
+
+      <div class="dev-contribute-grid">
+        <button class="dev-contribute-btn dev-contribute-primary" onclick="openContribute('buymecoffee')">
+          <i class="fas fa-bag-shopping" style="color:var(--accent);font-size:1.3rem"></i>
+          <div>
+            <div class="dev-contribute-title">Support on Gumroad</div>
+            <div class="dev-contribute-sub">nejamulhaque.gumroad.com 🛍️</div>
+          </div>
+        </button>
+        <button class="dev-contribute-btn" onclick="openContribute('upi')">
+          <i class="fas fa-mobile-screen-button" style="color:#7c6aff;font-size:1.3rem"></i>
+          <div>
+            <div class="dev-contribute-title">UPI / GPay</div>
+            <div class="dev-contribute-sub">Quick payment 📱</div>
+          </div>
+        </button>
+        <button class="dev-contribute-btn" onclick="openContribute('github')">
+          <i class="fab fa-github" style="color:#e6edf3;font-size:1.3rem"></i>
+          <div>
+            <div class="dev-contribute-title">Star on GitHub</div>
+            <div class="dev-contribute-sub">Show some love ⭐</div>
+          </div>
+        </button>
+        <button class="dev-contribute-btn" onclick="openContribute('feedback')">
+          <i class="fas fa-comment-dots" style="color:var(--gold);font-size:1.3rem"></i>
+          <div>
+            <div class="dev-contribute-title">Send Feedback</div>
+            <div class="dev-contribute-sub">Bug reports &amp; ideas 💡</div>
+          </div>
+        </button>
+      </div>
+
+      <div class="dev-divider"></div>
+
+      <!-- Built With -->
+      <div class="dev-section-title"><i class="fas fa-layer-group" style="color:var(--accent);margin-right:7px"></i>Built With</div>
+      <div class="dev-tech-row">
+        <div class="dev-tech-chip"><i class="fab fa-js" style="color:#ffd166"></i> Vanilla JS</div>
+        <div class="dev-tech-chip"><i class="fas fa-fire" style="color:#ff6b6b"></i> Firebase</div>
+        <div class="dev-tech-chip"><i class="fas fa-chart-line" style="color:#00d4aa"></i> Chart.js</div>
+        <div class="dev-tech-chip"><i class="fas fa-mobile-alt" style="color:#7c6aff"></i> PWA</div>
+        <div class="dev-tech-chip"><i class="fas fa-database" style="color:#ffd166"></i> Firestore</div>
+        <div class="dev-tech-chip"><i class="fab fa-font-awesome" style="color:#528dd7"></i> Font Awesome</div>
+      </div>
+
+      <!-- Footer -->
+      <div class="dev-footer-note">
+        Made with <i class="fas fa-heart" style="color:#ff6b6b;font-size:.75rem"></i> in India · 
+        &copy; 2026 Nestfy · 
+        <span style="color:var(--muted)">Free to use, always</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Contribute Sub-Modal -->
+<div class="overlay" id="contribute-overlay" onclick="if(event.target===this)closeContribute()" style="z-index:100002">
+  <div class="modal contribute-modal" role="dialog" style="max-width:380px">
+    <div class="modal-head">
+      <div class="modal-title" id="contribute-title">Support Developer</div>
+      <button class="modal-close" onclick="closeContribute()"><i class="fas fa-times"></i></button>
+    </div>
+    <div id="contribute-body" style="padding:4px 0 8px"></div>
+  </div>
+</div>
 
 </body>
 </html>
-

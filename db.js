@@ -1,5 +1,5 @@
 // ============================================================
-//  SPENDLY — db.js
+//  NESTFY — db.js
 //  Firestore Database Layer — all data scoped to /users/{uid}/
 // ============================================================
 
@@ -10,7 +10,7 @@ import {
   getDocs, getDoc, onSnapshot,
   query, orderBy,
   serverTimestamp, writeBatch,
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // ── Path helpers ─────────────────────────────────────────────
 const txCol     = uid       => collection(db, "users", uid, "transactions");
@@ -45,8 +45,13 @@ export function listenTransactions(uid, onChange) {
 }
 
 export async function getAllTransactions(uid) {
-  const snap = await getDocs(query(txCol(uid), orderBy("date", "desc")));
-  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  try {
+    const snap = await getDocs(query(txCol(uid), orderBy("date", "desc")));
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  } catch(e) { 
+    console.warn("Load transactions warning:", e); 
+    return []; 
+  }
 }
 
 // ── Budgets ───────────────────────────────────────────────────
@@ -76,8 +81,13 @@ export async function deleteGoal(uid, id) {
 }
 
 export async function getAllGoals(uid) {
-  const snap = await getDocs(goalCol(uid));
-  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  try {
+    const snap = await getDocs(goalCol(uid));
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  } catch(e) { 
+    console.warn("Load goals warning:", e); 
+    return []; 
+  }
 }
 
 // ── Recurring ─────────────────────────────────────────────────
@@ -91,8 +101,13 @@ export async function deleteRecurring(uid, id) {
 }
 
 export async function getAllRecurring(uid) {
-  const snap = await getDocs(recCol(uid));
-  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  try {
+    const snap = await getDocs(recCol(uid));
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  } catch(e) { 
+    console.warn("Load recurring warning:", e); 
+    return []; 
+  }
 }
 
 // ── Preferences ───────────────────────────────────────────────

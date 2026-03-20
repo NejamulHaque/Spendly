@@ -1,5 +1,95 @@
 {
-  "auth": {
-    "providers": {}
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "generate-icons.js",
+      "README.md",
+      "SETUP-GUIDE.md",
+      "FIXES.md",
+      "PLAYSTORE-GUIDE.md",
+      "PWA-INSTALL-GUIDE.md",
+      "AMAZON-STORE-LISTING.md",
+      "**/*.sh",
+      "**/*.exe",
+      "**/*.bat",
+      "**/*.cmd",
+      "**/*.apk",
+      "**/*.aab",
+      "**/*.keystore",
+      "**/*.jks",
+      "**/*.jar",
+      "**/*.class",
+      "nestfy-twa/**",
+      "android/**",
+      "build/**",
+      "gradlew",
+      "gradlew.bat"
+    ],
+    "rewrites": [
+      {
+        "source": "/legal.html",
+        "destination": "/legal.html"
+      },
+      {
+        "source": "/privacy.html",
+        "destination": "/privacy.html"
+      },
+      {
+        "source": "/sw.js",
+        "destination": "/sw.js"
+      },
+      {
+        "source": "/manifest.json",
+        "destination": "/manifest.json"
+      }
+    ],
+    "headers": [
+      {
+        "source": "/.well-known/assetlinks.json",
+        "headers": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Cache-Control", "value": "no-cache" }
+        ]
+      },
+      {
+        "source": "/sw.js",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
+          { "key": "Service-Worker-Allowed", "value": "/" }
+        ]
+      },
+      {
+        "source": "/manifest.json",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=86400" }
+        ]
+      },
+      {
+        "source": "**/*.@(js|css)",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=31536000" },
+          { "key": "Cross-Origin-Opener-Policy", "value": "same-origin-allow-popups" }
+        ]
+      },
+      {
+        "source": "/icons/**",
+        "headers": [
+          { "key": "Cache-Control", "value": "public, max-age=31536000" }
+        ]
+      },
+      {
+        "source": "**",
+        "headers": [
+          { "key": "Cross-Origin-Opener-Policy",  "value": "same-origin-allow-popups" },
+          { "key": "Cross-Origin-Embedder-Policy", "value": "unsafe-none" },
+          { "key": "X-Content-Type-Options",       "value": "nosniff" },
+          { "key": "X-Frame-Options",              "value": "SAMEORIGIN" },
+          { "key": "Referrer-Policy",              "value": "strict-origin-when-cross-origin" }
+        ]
+      }
+    ]
   }
 }

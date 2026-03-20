@@ -1,5 +1,5 @@
 // ============================================================
-//  SPENDLY — auth.js
+//  NESTFY — auth.js
 //  Firebase Authentication — Email/Password + Google + Reset
 //  All exports match exactly what script.js calls.
 // ============================================================
@@ -17,7 +17,7 @@ import {
   setPersistence,
   browserLocalPersistence,
   browserSessionPersistence,
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 // ── Default: keep user signed in across browser restarts ─────
 await setPersistence(auth, browserLocalPersistence);
